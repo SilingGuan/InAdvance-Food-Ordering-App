@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">lab3map</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <string name="google_map_key" />
+    <string-array name="store_name">
+        <item>store1</item>
+        <item>store2</item>
+        <item>store3</item>
+        <item>store4</item>
+        <item>store5</item>
+        <item>store6</item>
+        <item>store7</item>
+        <item>store8</item>
+        <item>store9</item>
+    </string-array>
+    <string-array name="store_address">
+        <item>store1</item>
+        <item>store2</item>
+        <item>store3</item>
+        <item>store4</item>
+        <item>store5</item>
+        <item>store6</item>
+        <item>store7</item>
+        <item>store8</item>
+        <item>store9</item>
+    </string-array>
+    <string-array name="store_rating">
+        <item>store1</item>
+        <item>store2</item>
+        <item>store3</item>
+        <item>store4</item>
+        <item>store5</item>
+        <item>store6</item>
+        <item>store7</item>
+        <item>store8</item>
+        <item>store9</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
