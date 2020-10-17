@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -142,6 +143,8 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             google_map = googleMap;
+                            googleMap.setMyLocationEnabled(true);
+                            googleMap.getUiSettings().setZoomControlsEnabled(true);
                             MarkerOptions current = new MarkerOptions();
                             current.position(currentLatLng);
                             google_map.addMarker(current).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
