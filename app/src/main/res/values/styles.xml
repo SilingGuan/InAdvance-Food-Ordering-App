@@ -9,5 +9,6 @@
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowTitleStyle">@color/common_google_signin_btn_text_light</item>
     </style>
 </resources>
