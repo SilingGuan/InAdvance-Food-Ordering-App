@@ -32,13 +32,15 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-      //  toolbar = (Toolbar) findViewById(R.id.tooBar);
+        toolbar = (Toolbar) findViewById(R.id.tooBar);
+        setSupportActionBar(toolbar);
+
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 
         fragment1 = new GmapFragment();
 
-     //  setSupportActionBar(toolbar);
+
         setViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 

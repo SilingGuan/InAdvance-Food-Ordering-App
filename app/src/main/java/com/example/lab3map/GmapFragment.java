@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,8 +39,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,12 +50,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.net.ssl.HttpsURLConnection;
 
 public class GmapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mMapView;
-    private  View view;
+    private View view;
     private Fragment1Listener listener;
     FusedLocationProviderClient client;
     SupportMapFragment fragment;
@@ -93,7 +97,7 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            retry=0;
+            retry = 0;
             getCurrentLocation();
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
@@ -102,10 +106,10 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
         find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                retry=0;
+                retry = 0;
                 address = type.getText().toString();
                 if (address.equals("")) {
-                    Toast.makeText(getActivity(),  " Can't be empty!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), " Can't be empty!", Toast.LENGTH_SHORT).show();
                 } else {
                     StringBuilder googlePlacesUrl =
                             new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
@@ -134,7 +138,7 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            showSnackBar("Enable Location and try again.",true);
+            showSnackBar("Enable Location and try again.", true);
             return;
         }
         Task<Location> task = client.getLastLocation();
@@ -149,6 +153,16 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             google_map = googleMap;
+                            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                // TODO: Consider calling
+                                //    ActivityCompat#requestPermissions
+                                // here to request the missing permissions, and then overriding
+                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                //                                          int[] grantResults)
+                                // to handle the case where the user grants the permission. See the documentation
+                                // for ActivityCompat#requestPermissions for more details.
+                                return;
+                            }
                             googleMap.setMyLocationEnabled(true);
                             googleMap.getUiSettings().setZoomControlsEnabled(true);
                             MarkerOptions current = new MarkerOptions();
@@ -337,9 +351,9 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
         View snackbarView = snackbar.getView();
         TextView textView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
         if (!error)
-            textView.setTextColor(Color.WHITE);
-        else
             textView.setTextColor(Color.RED);
+        else
+            textView.setTextColor(Color.WHITE);
 
         snackbar.show();
     }

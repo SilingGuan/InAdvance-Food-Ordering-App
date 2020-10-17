@@ -19,7 +19,7 @@
         <activity
             android:name=".SignUpActivity"
             android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".SecondActivity" />
+<!--        <activity android:name=".SecondActivity" />-->
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -29,6 +29,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SecondActivity"
+            android:label="InAdvance"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
