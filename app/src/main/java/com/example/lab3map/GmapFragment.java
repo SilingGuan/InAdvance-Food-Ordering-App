@@ -18,6 +18,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -102,18 +104,22 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 retry=0;
                 address = type.getText().toString();
-                StringBuilder googlePlacesUrl =
-                    new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-                googlePlacesUrl.append("location=").append(currentLat).append(",").append(currentLong);
-                googlePlacesUrl.append("&radius=").append(1000);
-                googlePlacesUrl.append("&keyword=").append(address);
-                googlePlacesUrl.append("&sensor=true");
-                googlePlacesUrl.append("&key=AIzaSyAlS4OUGpiDtl5ziIqCSkb3EcPb58Z3JZw");
+                if (address.equals("")) {
+                    Toast.makeText(getActivity(),  " Can't be empty!",Toast.LENGTH_SHORT).show();
+                } else {
+                    StringBuilder googlePlacesUrl =
+                            new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+                    googlePlacesUrl.append("location=").append(currentLat).append(",").append(currentLong);
+                    googlePlacesUrl.append("&radius=").append(1000);
+                    googlePlacesUrl.append("&keyword=").append(address);
+                    googlePlacesUrl.append("&sensor=true");
+                    googlePlacesUrl.append("&key=AIzaSyAlS4OUGpiDtl5ziIqCSkb3EcPb58Z3JZw");
 
-                google_map.clear(); //clear the last address markers including the current location
-                getCurrentLocation();
-                PlaceTask task = new PlaceTask();
-                task.execute(googlePlacesUrl.toString());
+                    google_map.clear(); //clear the last address markers including the current location
+                    getCurrentLocation();
+                    PlaceTask task = new PlaceTask();
+                    task.execute(googlePlacesUrl.toString());
+                }
             }
         });
     }
