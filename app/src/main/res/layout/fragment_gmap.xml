@@ -17,11 +17,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:drawable/editbox_background"/>
+
         <Button
+            android:id="@+id/bt_find"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/bt_find"
-            android:text="Find"/>
+            android:layout_marginLeft="10dp"
+            android:text="Find" />
     </LinearLayout>
 
 <!--    <fragment-->

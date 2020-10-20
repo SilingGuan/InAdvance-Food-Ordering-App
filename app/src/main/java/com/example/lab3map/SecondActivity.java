@@ -2,17 +2,29 @@ package com.example.lab3map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
+
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,6 +37,12 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     private MenuFragment fragment3;
     private CartFragment fragment4;
     private MeFragment fragment5;
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle toggle;
+    NavigationView navigationView;
+    private FirebaseAuth mAuth;
+    private static String TAG = "ABC";
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -32,13 +50,13 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-      //  toolbar = (Toolbar) findViewById(R.id.tooBar);
+        setNavDrawer();
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 
         fragment1 = new GmapFragment();
 
-     //  setSupportActionBar(toolbar);
+
         setViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -69,5 +87,51 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     @Override
     public void onInputFragment2Sent(List<HashMap<String, String>> hashMaps) {
 
+    }
+
+    private void setNavDrawer(){
+
+        toolbar = (Toolbar) findViewById(R.id.tooBar);
+        setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        drawerLayout = findViewById(R.id.drawer);
+        navigationView = findViewById(R.id.nav_view);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+                                                             // This method will trigger on item Click of navigation menu
+          @Override
+           public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+              if (menuItem.isChecked()) menuItem.setChecked(false);
+              else menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+//
+//              FragmentManager fm = getSupportFragmentManager();
+//              FragmentTransaction ft = fm.beginTransaction();
+//              Fragment f = null;
+                  switch (menuItem.getItemId()) {
+                   case R.id.logout:
+                       FirebaseAuth.getInstance().signOut();
+                       startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                       finish();
+                       break;
+//                   case R.id.me:
+//                         f = new GmapFragment();
+//                         // FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//
+//                          break;
+                   default:
+                          break;
+                  }
+//              ft.replace(R.id.viewPager,f);
+//              ft.commit();
+              return true;
+             }
+        });
     }
 }
