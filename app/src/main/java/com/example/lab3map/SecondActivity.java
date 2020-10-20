@@ -24,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     NavigationView navigationView;
     private FirebaseAuth mAuth;
     private static String TAG = "ABC";
+    //FirebaseFirestore firestore;
 
 
 
@@ -50,6 +52,9 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+
+        mAuth = FirebaseAuth.getInstance();
+       // firestore = FirebaseFirestore.getInstance();
         setNavDrawer();
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -94,7 +99,6 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
         toolbar = (Toolbar) findViewById(R.id.tooBar);
         setSupportActionBar(toolbar);
-        mAuth = FirebaseAuth.getInstance();
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.nav_view);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
@@ -109,7 +113,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
           @Override
            public boolean onNavigationItemSelected(MenuItem menuItem) {
-              int THE_POSITION = 0;
+              //int THE_POSITION = 0;
 
               if (menuItem.isChecked()) menuItem.setChecked(false);
               else menuItem.setChecked(true);
@@ -123,15 +127,21 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                        finish();
                        break;
+                    case R.id.login:
+                          // viewPager.setCurrentItem(0);
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+                        finish();
+                        break;
                    case R.id.me:
-                       THE_POSITION = 04;
-                      // viewPager.setCurrentItem(4);
+                       //THE_POSITION = 04;
+                       viewPager.setCurrentItem(4);
                        addFragmentToStack(new MeFragment());
                           break;
                    default:
                           break;
                   }
-              viewPager.setCurrentItem(THE_POSITION);
+             // viewPager.setCurrentItem(THE_POSITION);
               //viewPager.setCurrentItem(tab.getPosition());
               return true;
              }
