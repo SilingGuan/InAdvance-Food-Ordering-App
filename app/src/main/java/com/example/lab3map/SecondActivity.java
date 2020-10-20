@@ -67,6 +67,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     }
 
+
     private void setViewPager(ViewPager viewPager) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(fragment1, "Search");
@@ -101,37 +102,62 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
 
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-                                                             // This method will trigger on item Click of navigation menu
+
           @Override
            public boolean onNavigationItemSelected(MenuItem menuItem) {
+              int THE_POSITION = 0;
 
               if (menuItem.isChecked()) menuItem.setChecked(false);
               else menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
-//
-//              FragmentManager fm = getSupportFragmentManager();
-//              FragmentTransaction ft = fm.beginTransaction();
-//              Fragment f = null;
+
+
                   switch (menuItem.getItemId()) {
                    case R.id.logout:
+                      // viewPager.setCurrentItem(0);
                        FirebaseAuth.getInstance().signOut();
                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                        finish();
                        break;
-//                   case R.id.me:
-//                         f = new GmapFragment();
-//                         // FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//
-//                          break;
+                   case R.id.me:
+                       THE_POSITION = 04;
+                      // viewPager.setCurrentItem(4);
+                       addFragmentToStack(new MeFragment());
+                          break;
                    default:
                           break;
                   }
-//              ft.replace(R.id.viewPager,f);
-//              ft.commit();
+              viewPager.setCurrentItem(THE_POSITION);
+              //viewPager.setCurrentItem(tab.getPosition());
               return true;
              }
         });
+    }
+//    public void onBackPressed() { // This code loads home fragment when back key is pressed // when user is in other fragment than home
+//        if (shouldLoadHomeFragOnBackPress) {
+//            // checking if user is on other navigation menu // rather than home
+//            if (navItemIndex != 0) { navItemIndex = 0; CURRENT_TAG = TAG_HOME; loadHomeFragment(); return; } } super.onBackPressed(); }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.me) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    private void addFragmentToStack(Fragment fragment){
+        getSupportFragmentManager().beginTransaction().replace(R.id.viewPager, fragment).commit();
+
     }
 }
