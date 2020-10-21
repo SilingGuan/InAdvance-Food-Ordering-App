@@ -36,10 +36,10 @@ public class SignUpActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Sign Up Page");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if(mAuth.getCurrentUser() !=null){
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
-        }
+//        if(mAuth.getCurrentUser() !=null){
+//            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+//            finish();
+//        }
 
         signupbutton.setOnClickListener(new View.OnClickListener() {
             @Override

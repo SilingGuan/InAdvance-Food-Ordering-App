@@ -34,9 +34,8 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     private ViewPager viewPager;
     private GmapFragment fragment1;
     private Fragment2 fragment2;
-    private MenuFragment fragment3;
-    private CartFragment fragment4;
-    private MeFragment fragment5;
+    private CartFragment fragment3;
+    private MeFragment fragment4;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
@@ -61,9 +60,8 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         tabLayout.setupWithViewPager(viewPager);
 
         fragment2 = Fragment2.newInstance();
-        fragment3 = MenuFragment.newInstance();
-        fragment4 = CartFragment.newInstance();
-        fragment5 = MeFragment.newInstance();
+        fragment3 = CartFragment.newInstance();
+        fragment4 = MeFragment.newInstance();
 
     }
 
@@ -72,7 +70,6 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(fragment1, "Search");
         viewPagerAdapter.addFragment(Fragment2.newInstance(), "List");
-        viewPagerAdapter.addFragment(MenuFragment.newInstance(),  "Menu");
         viewPagerAdapter.addFragment(CartFragment.newInstance(), "Cart");
         viewPagerAdapter.addFragment(MeFragment.newInstance(), "Me");
         viewPager.setAdapter(viewPagerAdapter);
