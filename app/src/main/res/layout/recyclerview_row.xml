@@ -52,6 +52,7 @@
                 android:paddingTop="2pt"
                 android:paddingBottom="5pt"
                 android:text="Rating" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

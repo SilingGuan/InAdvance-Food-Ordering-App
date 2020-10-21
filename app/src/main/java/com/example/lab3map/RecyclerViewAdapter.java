@@ -1,5 +1,6 @@
 package com.example.lab3map;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,16 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
+    public static Object RecyclerViewClickListener;
     private List<RecyclerViewRow> recyclerViewRowList;
-    private Fragment2 context;
+//    private Fragment2 context;
+    private RecyclerViewClickListener listener;
 
-    public RecyclerViewAdapter(List<RecyclerViewRow> recyclerViewRowList, Fragment2 fragment2) {
+//    public RecyclerViewAdapter(List<RecyclerViewRow> recyclerViewRowList, Fragment2 fragment2) {
+    public RecyclerViewAdapter(List<RecyclerViewRow> recyclerViewRowList, RecyclerViewClickListener listener) {
         this.recyclerViewRowList = recyclerViewRowList;
-        this.context = fragment2;
+//        this.context = fragment2;
+        this.listener = listener;
     }
 
     @NonNull
@@ -42,10 +47,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return recyclerViewRowList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView textViewName;
         public TextView textViewAddress;
         public TextView textViewRating;
+        private RecyclerViewClickListener listener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,6 +59,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             textViewName = (TextView) itemView.findViewById(R.id.tv_name);
             textViewAddress = (TextView) itemView.findViewById(R.id.tv_address);
             textViewRating = (TextView) itemView.findViewById(R.id.tv_rating);
+            itemView.setOnClickListener(this);
+
+            listener = new RecyclerViewAdapter.RecyclerViewClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    Intent intent = new Intent(view.getContext(), MenuActivity.class);
+                    view.getContext().startActivity((intent));
+                }
+            };
         }
+
+        @Override
+        public void onClick(View v) {
+            listener.onClick(v,getAdapterPosition());
+        }
+    }
+
+    public interface RecyclerViewClickListener{
+        void onClick(View view,int position);
     }
 }
