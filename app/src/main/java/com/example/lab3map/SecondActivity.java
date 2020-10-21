@@ -9,25 +9,29 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class SecondActivity extends AppCompatActivity implements GmapFragment.Fragment1Listener, Fragment2.Fragment2Listener{
     private Toolbar toolbar;
@@ -41,9 +45,11 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
+    FirebaseFirestore firestore;
     private static String TAG = "ABC";
-    //FirebaseFirestore firestore;
+    TextView fullName;
+    String userID;
 
 
 
@@ -54,10 +60,11 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         setContentView(R.layout.activity_second);
 
         mAuth = FirebaseAuth.getInstance();
-       // firestore = FirebaseFirestore.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+
         setNavDrawer();
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        tabLayout =  findViewById(R.id.tabLayout);
+        viewPager =  findViewById(R.id.viewPager);
 
         fragment1 = new GmapFragment();
 
@@ -97,7 +104,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     private void setNavDrawer(){
 
-        toolbar = (Toolbar) findViewById(R.id.tooBar);
+        toolbar = findViewById(R.id.tooBar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.nav_view);
@@ -106,8 +113,22 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
 
+        // setup drawer - display the user's full name
+        View header =navigationView.getHeaderView(0);
+        fullName = header.findViewById(R.id.header_fName);
+        userID = mAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = firestore.collection("users").document(userID);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                String name = documentSnapshot.getString("fullName");
+                fullName.setText(" Welcome！ "+name);
+            }
+        });
 
 
+
+        // drawer- select menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
 
@@ -146,6 +167,8 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
               return true;
              }
         });
+
+
     }
 //    public void onBackPressed() { // This code loads home fragment when back key is pressed // when user is in other fragment than home
 //        if (shouldLoadHomeFragOnBackPress) {
