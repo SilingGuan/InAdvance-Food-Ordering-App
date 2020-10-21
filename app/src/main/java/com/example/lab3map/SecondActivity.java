@@ -2,17 +2,29 @@ package com.example.lab3map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
+
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,6 +37,12 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     private MenuFragment fragment3;
     private CartFragment fragment4;
     private MeFragment fragment5;
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle toggle;
+    NavigationView navigationView;
+    private FirebaseAuth mAuth;
+    private static String TAG = "ABC";
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -32,13 +50,13 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-      //  toolbar = (Toolbar) findViewById(R.id.tooBar);
+        setNavDrawer();
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 
         fragment1 = new GmapFragment();
 
-     //  setSupportActionBar(toolbar);
+
         setViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -48,6 +66,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         fragment5 = MeFragment.newInstance();
 
     }
+
 
     private void setViewPager(ViewPager viewPager) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -68,6 +87,77 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     @Override
     public void onInputFragment2Sent(List<HashMap<String, String>> hashMaps) {
+
+    }
+
+    private void setNavDrawer(){
+
+        toolbar = (Toolbar) findViewById(R.id.tooBar);
+        setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        drawerLayout = findViewById(R.id.drawer);
+        navigationView = findViewById(R.id.nav_view);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+
+
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+
+          @Override
+           public boolean onNavigationItemSelected(MenuItem menuItem) {
+              int THE_POSITION = 0;
+
+              if (menuItem.isChecked()) menuItem.setChecked(false);
+              else menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+
+
+                  switch (menuItem.getItemId()) {
+                   case R.id.logout:
+                      // viewPager.setCurrentItem(0);
+                       FirebaseAuth.getInstance().signOut();
+                       startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                       finish();
+                       break;
+                   case R.id.me:
+                       THE_POSITION = 04;
+                      // viewPager.setCurrentItem(4);
+                       addFragmentToStack(new MeFragment());
+                          break;
+                   default:
+                          break;
+                  }
+              viewPager.setCurrentItem(THE_POSITION);
+              //viewPager.setCurrentItem(tab.getPosition());
+              return true;
+             }
+        });
+    }
+//    public void onBackPressed() { // This code loads home fragment when back key is pressed // when user is in other fragment than home
+//        if (shouldLoadHomeFragOnBackPress) {
+//            // checking if user is on other navigation menu // rather than home
+//            if (navItemIndex != 0) { navItemIndex = 0; CURRENT_TAG = TAG_HOME; loadHomeFragment(); return; } } super.onBackPressed(); }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.me) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    private void addFragmentToStack(Fragment fragment){
+        getSupportFragmentManager().beginTransaction().replace(R.id.viewPager, fragment).commit();
 
     }
 }
