@@ -4,17 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,15 +15,12 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,9 +34,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+
 import java.util.HashMap;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 public class SecondActivity extends AppCompatActivity implements GmapFragment.Fragment1Listener, Fragment2.Fragment2Listener{
@@ -69,6 +59,8 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     ImageView profileImage;
     String userID;
     Uri imageUri;
+    int THE_POSITION;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -178,55 +170,67 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
           @Override
            public boolean onNavigationItemSelected(MenuItem menuItem) {
-              //int THE_POSITION = 0;
+
 
               if (menuItem.isChecked()) menuItem.setChecked(false);
               else menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
 
 
+
                   switch (menuItem.getItemId()) {
                    case R.id.logout:
-                      // viewPager.setCurrentItem(0);
                        FirebaseAuth.getInstance().signOut();
                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                        finish();
                        break;
                     case R.id.login:
-                          // viewPager.setCurrentItem(0);
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
                         finish();
                         break;
+
                    case R.id.me:
-                       //THE_POSITION = 04;
-                       viewPager.setCurrentItem(4);
-                       addFragmentToStack(new MeFragment());
+                       THE_POSITION = 04;
+                       viewPager.setCurrentItem(THE_POSITION);
+                      // addFragmentToStack(fragment5);
+                       showMeFragment();
+                       break;
+                    case R.id.map:
+                          THE_POSITION = 0;
+                          viewPager.setCurrentItem(THE_POSITION);
+                          // addFragmentToStack(fragment5);
+                          showMapFragment();
                           break;
                    default:
                           break;
                   }
-             // viewPager.setCurrentItem(THE_POSITION);
-              //viewPager.setCurrentItem(tab.getPosition());
               return true;
              }
         });
-
-
     }
+
+    // switch - helper
+    private void showMeFragment() {
+        if (this.fragment5 == null) {
+            this.addFragmentToStack(this.fragment5);
+        }
+    }
+    private void showMapFragment() {
+        if (this.fragment1 == null) {
+            this.addFragmentToStack(this.fragment1);
+        }
+    }
+
 //    @Override
 //    public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
+//
+//        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//            getSupportFragmentManager().popBackStack();
+//        } else{
+//            finish();
 //        }
 //    }
-//    public void onBackPressed() { // This code loads home fragment when back key is pressed // when user is in other fragment than home
-//        if (shouldLoadHomeFragOnBackPress) {
-//            // checking if user is on other navigation menu // rather than home
-//            if (navItemIndex != 0) { navItemIndex = 0; CURRENT_TAG = TAG_HOME; loadHomeFragment(); return; } } super.onBackPressed(); }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -243,18 +247,16 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         return super.onOptionsItemSelected(item);
     }
     private void addFragmentToStack(Fragment fragment){
-        getSupportFragmentManager().beginTransaction().replace(R.id.viewPager, fragment).commit();
-
+        if (!fragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.viewPager, fragment).addToBackStack(null).commit();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1000 && resultCode == RESULT_OK ){
-//            if(resultCode == Activity.RESULT_OK){
                 imageUri = data.getData();
-               // profileImage.setImageURI(imageUri);
-
                 uploadImageToFirebase();
             }
         }
