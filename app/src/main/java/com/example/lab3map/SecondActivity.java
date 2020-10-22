@@ -6,27 +6,38 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
 
 import java.util.HashMap;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public class SecondActivity extends AppCompatActivity implements GmapFragment.Fragment1Listener, Fragment2.Fragment2Listener{
     private Toolbar toolbar;
@@ -39,8 +50,15 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
+    FirebaseFirestore firestore;
+    StorageReference storageReference;
     private static String TAG = "ABC";
+    TextView fullName;
+    ImageView profileImage;
+    String userID;
+    Uri imageUri;
+    int THE_POSITION;
 
 
 
@@ -49,9 +67,22 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+
+        mAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
         setNavDrawer();
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        StorageReference profileRef = storageReference.child("users/"+mAuth.getCurrentUser().getUid()+"profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImage);
+            }
+        });
+
+        tabLayout =  findViewById(R.id.tabLayout);
+        viewPager =  findViewById(R.id.viewPager);
 
         fragment1 = new GmapFragment();
 
@@ -64,6 +95,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         fragment4 = MeFragment.newInstance();
 
     }
+
 
 
     private void setViewPager(ViewPager viewPager) {
@@ -89,9 +121,8 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     private void setNavDrawer(){
 
-        toolbar = (Toolbar) findViewById(R.id.tooBar);
+        toolbar = findViewById(R.id.tooBar);
         setSupportActionBar(toolbar);
-        mAuth = FirebaseAuth.getInstance();
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.nav_view);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
@@ -101,43 +132,102 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
 
 
+        View header = navigationView.getHeaderView(0);
+        profileImage = header.findViewById(R.id.profpic);
+
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open gallery
+                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGalleryIntent,1000);
+            }
+        });
+
+
+
+         // setup drawer - display the user's full name
+        fullName = header.findViewById(R.id.header_fName);
+        userID = mAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = firestore.collection("users").document(userID);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                String name = documentSnapshot.getString("fullName");
+                fullName.setText(" Welcome！ "+name);
+            }
+        });
+
+
+
+        // drawer- select menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
 
           @Override
            public boolean onNavigationItemSelected(MenuItem menuItem) {
-              int THE_POSITION = 0;
+
 
               if (menuItem.isChecked()) menuItem.setChecked(false);
               else menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
 
 
+
                   switch (menuItem.getItemId()) {
                    case R.id.logout:
-                      // viewPager.setCurrentItem(0);
                        FirebaseAuth.getInstance().signOut();
                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                        finish();
                        break;
+                    case R.id.login:
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+                        finish();
+                        break;
+
                    case R.id.me:
                        THE_POSITION = 04;
-                      // viewPager.setCurrentItem(4);
-                       addFragmentToStack(new MeFragment());
+                       viewPager.setCurrentItem(THE_POSITION);
+                      // addFragmentToStack(fragment5);
+                       showMeFragment();
+                       break;
+                    case R.id.map:
+                          THE_POSITION = 0;
+                          viewPager.setCurrentItem(THE_POSITION);
+                          // addFragmentToStack(fragment5);
+                          showMapFragment();
                           break;
                    default:
                           break;
                   }
-              viewPager.setCurrentItem(THE_POSITION);
-              //viewPager.setCurrentItem(tab.getPosition());
               return true;
              }
         });
     }
-//    public void onBackPressed() { // This code loads home fragment when back key is pressed // when user is in other fragment than home
-//        if (shouldLoadHomeFragOnBackPress) {
-//            // checking if user is on other navigation menu // rather than home
-//            if (navItemIndex != 0) { navItemIndex = 0; CURRENT_TAG = TAG_HOME; loadHomeFragment(); return; } } super.onBackPressed(); }
+
+    // switch - helper
+    private void showMeFragment() {
+        if (this.fragment5 == null) {
+            this.addFragmentToStack(this.fragment5);
+        }
+    }
+    private void showMapFragment() {
+        if (this.fragment1 == null) {
+            this.addFragmentToStack(this.fragment1);
+        }
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//
+//        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//            getSupportFragmentManager().popBackStack();
+//        } else{
+//            finish();
+//        }
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -154,7 +244,41 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         return super.onOptionsItemSelected(item);
     }
     private void addFragmentToStack(Fragment fragment){
-        getSupportFragmentManager().beginTransaction().replace(R.id.viewPager, fragment).commit();
+        if (!fragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.viewPager, fragment).addToBackStack(null).commit();
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000 && resultCode == RESULT_OK ){
+                imageUri = data.getData();
+                uploadImageToFirebase();
+            }
+        }
+
+
+    private void uploadImageToFirebase() {
+        // upload image to firebase storage
+        final StorageReference fileRef = storageReference.child("users/"+mAuth.getCurrentUser().getUid()+"profile.jpg");
+        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+               // Toast.makeText(SecondActivity.this,"Image Uploaded", Toast.LENGTH_SHORT).show();
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(profileImage);
+                    }
+                });
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SecondActivity.this, "Failed.",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
