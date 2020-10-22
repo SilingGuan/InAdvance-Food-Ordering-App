@@ -1,6 +1,7 @@
 package com.example.lab3map;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class Fragment2 extends Fragment {
     private Fragment2Listener listener;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
+    private RecyclerViewAdapter.RecyclerViewClickListener listener1;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private  static Fragment Instance;
@@ -109,10 +111,27 @@ public class Fragment2 extends Fragment {
             String rating = "Rating: "+hashMapList.get("rating")+"/5";
             recyclerViewRowList.add(new RecyclerViewRow(name,address,rating));
         }
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList,Fragment2.this);
+//        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList,Fragment2.this);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList, (RecyclerViewAdapter.RecyclerViewClickListener) RecyclerViewAdapter.RecyclerViewClickListener);
         recyclerView.setAdapter(recyclerViewAdapter);
+        setOnClickListener();
+
+
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
+
+    private void setOnClickListener() {
+        listener1 = new RecyclerViewAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                startActivity(intent);
+            }
+        };
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
