@@ -37,7 +37,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SecondActivity extends AppCompatActivity implements GmapFragment.Fragment1Listener, Fragment2.Fragment2Listener{
     private Toolbar toolbar;
@@ -209,8 +209,8 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     // switch - helper
     private void showMeFragment() {
-        if (this.fragment5 == null) {
-            this.addFragmentToStack(this.fragment5);
+        if (this.fragment4 == null) {
+            this.addFragmentToStack(this.fragment4);
         }
     }
     private void showMapFragment() {
