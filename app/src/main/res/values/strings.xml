@@ -1,40 +1,40 @@
 <resources>
-    <string name="app_name">lab3map</string>
+    <string name="app_name">Project277</string>
     <!-- TODO: Remove or change this placeholder text -->
     <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
     <string name="google_map_key" />
-    <string-array name="store_name">
-        <item>store1</item>
-        <item>store2</item>
-        <item>store3</item>
-        <item>store4</item>
-        <item>store5</item>
-        <item>store6</item>
-        <item>store7</item>
-        <item>store8</item>
-        <item>store9</item>
+<!--    <string-array name="food_image">-->
+<!--        <item>food_image1</item>-->
+<!--        <item>food_image2</item>-->
+<!--        <item>food_image3</item>-->
+<!--        <item>food_image4</item>-->
+<!--        <item>food_image5</item>-->
+<!--        <item>food_image6</item>-->
+<!--        <item>food_image7</item>-->
+<!--        <item>food_image8</item>-->
+<!--        <item>food_image9</item>-->
+<!--    </string-array>-->
+    <string-array name="food_name">
+        <item>food_name1</item>
+        <item>food_name2</item>
+        <item>food_name3</item>
+        <item>food_name4</item>
+        <item>food_name5</item>
+        <item>food_name6</item>
+        <item>food_name7</item>
+        <item>food_name8</item>
+        <item>food_name9</item>
     </string-array>
-    <string-array name="store_address">
-        <item>store1</item>
-        <item>store2</item>
-        <item>store3</item>
-        <item>store4</item>
-        <item>store5</item>
-        <item>store6</item>
-        <item>store7</item>
-        <item>store8</item>
-        <item>store9</item>
-    </string-array>
-    <string-array name="store_rating">
-        <item>store1</item>
-        <item>store2</item>
-        <item>store3</item>
-        <item>store4</item>
-        <item>store5</item>
-        <item>store6</item>
-        <item>store7</item>
-        <item>store8</item>
-        <item>store9</item>
+    <string-array name="food_price">
+        <item>food_price1</item>
+        <item>food_price2</item>
+        <item>food_price3</item>
+        <item>food_price4</item>
+        <item>food_price5</item>
+        <item>food_price6</item>
+        <item>food_price7</item>
+        <item>food_price8</item>
+        <item>food_price9</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
