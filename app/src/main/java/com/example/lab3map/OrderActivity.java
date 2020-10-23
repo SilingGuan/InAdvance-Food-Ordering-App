@@ -23,7 +23,7 @@ public class OrderActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.lab3map", MODE_PRIVATE);
         String text = sharedPreferences.getString("priceTotal","");
         TextView textView = (TextView)findViewById(R.id.tv);
-        textView.setText("Order detail: $" +text );
+        textView.setText("Your Order: $"+text);
 
 
 //        generate.setOnClickListener(new View.OnClickListener() {

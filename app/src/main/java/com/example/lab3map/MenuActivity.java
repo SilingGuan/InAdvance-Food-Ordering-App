@@ -16,7 +16,7 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 
 public class MenuActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
-    private Button place_order;
+    private Button check_out;
     RecyclerView recycler_cart;
     TextView price_total;
     String s1[],s2[],number;
@@ -29,7 +29,7 @@ public class MenuActivity extends AppCompatActivity {
 
         recycler_cart = findViewById(R.id.recycler_cart);
         price_total = (TextView) findViewById(R.id.price_total);
-        place_order = (Button) findViewById(R.id.btn_place_order);
+        check_out = (Button) findViewById(R.id.btn_place_order);
         sharedPreferences = this.getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
 
         s1 = getResources().getStringArray(R.array.food_name);
@@ -40,9 +40,9 @@ public class MenuActivity extends AppCompatActivity {
         recycler_cart.setAdapter(cartAdapter);
         recycler_cart.setLayoutManager(new LinearLayoutManager(recycler_cart.getContext()));
         price_total.setText("0");
-        final String priceTotal = price_total.getText().toString();
 
-        place_order.setOnClickListener(new View.OnClickListener() {
+
+        check_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sharedPreferences.edit().putString("priceTotal",price_total.getText().toString()).apply();
