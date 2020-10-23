@@ -58,7 +58,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     String userID;
     Uri imageUri;
     int THE_POSITION;
-
+    Intent intent;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -173,6 +173,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
 
                   switch (menuItem.getItemId()) {
+
                    case R.id.logout:
                        FirebaseAuth.getInstance().signOut();
                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -197,7 +198,6 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
                           showMapFragment();
                           break;
                     case R.id.qr_code:
-                          Intent intent;
                           intent = new Intent(SecondActivity.this,QR_CodeActivity.class);
                           startActivity(intent);
                           finish();

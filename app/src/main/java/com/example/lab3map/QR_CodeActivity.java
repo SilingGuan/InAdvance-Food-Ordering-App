@@ -1,6 +1,8 @@
 package com.example.lab3map;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -10,11 +12,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.StorageReference;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-
+import androidx.core.app.NavUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class QR_CodeActivity extends AppCompatActivity {
 
@@ -23,19 +30,30 @@ public class QR_CodeActivity extends AppCompatActivity {
     private EditText text;
     private Button download;
     private Button generate;
+    private Button return_home;
     private ImageView iv;
-
+    FirebaseAuth mAuth;
+    FirebaseFirestore firestore;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_r__code);
 
+        // Action bar: return to previous page
+//        if(NavUtils.getParentActivityName(QR_CodeActivity.this)!= null){
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        }
+
+
         text = findViewById(R.id.text);
         download = findViewById(R.id.download);
         download.setVisibility(View.INVISIBLE);
         generate = findViewById(R.id.generate);
         iv = findViewById(R.id.image);
+        return_home = findViewById(R.id.qr_return_home);
+        return_home.setVisibility(View.INVISIBLE);
 
 
 
@@ -60,6 +78,15 @@ public class QR_CodeActivity extends AppCompatActivity {
                                         .show();
                             }
                         });
+                        return_home.setVisibility(View.VISIBLE);
+                        return_home.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent;
+                                intent = new Intent(QR_CodeActivity.this,SecondActivity.class);
+                                startActivity(intent);
+                            }
+                        });
 
                     }catch (WriterException e){
                         e.printStackTrace();
@@ -68,6 +95,7 @@ public class QR_CodeActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private Bitmap textToImageEncode(String value) throws WriterException {
         BitMatrix bitMatrix;
@@ -93,4 +121,5 @@ public class QR_CodeActivity extends AppCompatActivity {
         bitmap.setPixels(pixels, 0, 500, 0, 0, bitMatrixWidth, bitMatrixHeight);
         return bitmap;
     }
+
 }
