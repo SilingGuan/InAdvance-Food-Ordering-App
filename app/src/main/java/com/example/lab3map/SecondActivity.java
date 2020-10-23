@@ -196,6 +196,12 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
                           // addFragmentToStack(fragment5);
                           showMapFragment();
                           break;
+                    case R.id.qr_code:
+                          Intent intent;
+                          intent = new Intent(SecondActivity.this,QR_CodeActivity.class);
+                          startActivity(intent);
+                          finish();
+                          break;
                    default:
                           break;
                   }
