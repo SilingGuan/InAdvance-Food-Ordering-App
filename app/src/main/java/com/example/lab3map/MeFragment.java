@@ -74,9 +74,9 @@ public class MeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
-        String text = sharedPreferences.getString("Username","");
-        TextView textView1 = view.findViewById(R.id.textView1);
-        textView1.setText(text + ", welcome!");
+//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
+//        String text = sharedPreferences.getString("Username","");
+//        TextView textView1 = view.findViewById(R.id.textView1);
+//        textView1.setText(text + ", welcome!");
     }
 }

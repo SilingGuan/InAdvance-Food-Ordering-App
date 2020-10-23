@@ -3,17 +3,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
     <string name="google_map_key" />
-<!--    <string-array name="food_image">-->
-<!--        <item>food_image1</item>-->
-<!--        <item>food_image2</item>-->
-<!--        <item>food_image3</item>-->
-<!--        <item>food_image4</item>-->
-<!--        <item>food_image5</item>-->
-<!--        <item>food_image6</item>-->
-<!--        <item>food_image7</item>-->
-<!--        <item>food_image8</item>-->
-<!--        <item>food_image9</item>-->
-<!--    </string-array>-->
+    <!--    <string-array name="food_image">-->
+    <!--        <item>food_image1</item>-->
+    <!--        <item>food_image2</item>-->
+    <!--        <item>food_image3</item>-->
+    <!--        <item>food_image4</item>-->
+    <!--        <item>food_image5</item>-->
+    <!--        <item>food_image6</item>-->
+    <!--        <item>food_image7</item>-->
+    <!--        <item>food_image8</item>-->
+    <!--        <item>food_image9</item>-->
+    <!--    </string-array>-->
     <string-array name="food_name">
         <item>food_name1</item>
         <item>food_name2</item>
@@ -26,15 +26,15 @@
         <item>food_name9</item>
     </string-array>
     <string-array name="food_price">
-        <item>food_price1</item>
-        <item>food_price2</item>
-        <item>food_price3</item>
-        <item>food_price4</item>
-        <item>food_price5</item>
-        <item>food_price6</item>
-        <item>food_price7</item>
-        <item>food_price8</item>
-        <item>food_price9</item>
+        <item>10.0</item>
+        <item>15.5</item>
+        <item>10.0</item>
+        <item>15.5</item>
+        <item>10.0</item>
+        <item>15.5</item>
+        <item>10.0</item>
+        <item>15.5</item>
+        <item>10.0</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

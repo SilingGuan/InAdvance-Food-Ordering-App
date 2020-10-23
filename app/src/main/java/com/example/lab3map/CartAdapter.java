@@ -4,22 +4,30 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
-    String data1[], data2[];
+    String data1[], data2[], number;
+    float total=0;
     int image[];
     Context context;
-    public CartAdapter(Context ct,String s1[], String s2[], int img[]){
+
+
+    public CartAdapter(Context ct,String s1[], String s2[], int img[], String num){
         context = ct;
         data1 = s1;
         data2 = s2;
         image = img;
+        number = num;
+
     }
     @NonNull
     @Override
@@ -34,6 +42,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.myText1.setText(data1[position]);
         holder.myText2.setText(data2[position]);
         holder.myImage.setImageResource(image[position]);
+        holder.price=Float.parseFloat(data2[position]);
+
     }
 
     @Override
@@ -44,11 +54,31 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView myText1, myText2;
         ImageView myImage;
-        public MyViewHolder(@NonNull View itemView) {
+        ElegantNumberButton button;
+        String num;
+        float price=0;
+        float oldnum = 0;
+
+        public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             myText1 = itemView.findViewById(R.id.text_food_name);
             myText2 = itemView.findViewById(R.id.text_food_price);
             myImage = itemView.findViewById(R.id.image_cart);
+
+
+            button = (ElegantNumberButton) itemView.findViewById(R.id.number_button);
+            button.setOnClickListener(new ElegantNumberButton.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String num = button.getNumber();
+                    float num1 =Integer.parseInt(num);
+                    total-=oldnum*price;
+                    total+=num1*price;
+                    oldnum=num1;
+                    TextView price_total = (TextView) itemView.getRootView().findViewById(R.id.price_total);
+                    price_total.setText(String.valueOf(total));
+                }
+            });
         }
     }
 }

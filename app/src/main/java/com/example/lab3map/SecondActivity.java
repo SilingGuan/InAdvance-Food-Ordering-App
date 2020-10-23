@@ -45,8 +45,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     private ViewPager viewPager;
     private GmapFragment fragment1;
     private Fragment2 fragment2;
-    private CartFragment fragment3;
-    private MeFragment fragment4;
+    private MeFragment fragment3;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
@@ -91,8 +90,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         tabLayout.setupWithViewPager(viewPager);
 
         fragment2 = Fragment2.newInstance();
-        fragment3 = CartFragment.newInstance();
-        fragment4 = MeFragment.newInstance();
+        fragment3 = MeFragment.newInstance();
 
     }
 
@@ -102,7 +100,6 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(fragment1, "Search");
         viewPagerAdapter.addFragment(Fragment2.newInstance(), "List");
-        viewPagerAdapter.addFragment(CartFragment.newInstance(), "Cart");
         viewPagerAdapter.addFragment(MeFragment.newInstance(), "Me");
         viewPager.setAdapter(viewPagerAdapter);
 
@@ -188,7 +185,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
                         break;
 
                    case R.id.me:
-                       THE_POSITION = 04;
+                       THE_POSITION = 03;
                        viewPager.setCurrentItem(THE_POSITION);
                       // addFragmentToStack(fragment5);
                        showMeFragment();
@@ -209,8 +206,8 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     // switch - helper
     private void showMeFragment() {
-        if (this.fragment4 == null) {
-            this.addFragmentToStack(this.fragment4);
+        if (this.fragment3 == null) {
+            this.addFragmentToStack(this.fragment3);
         }
     }
     private void showMapFragment() {
