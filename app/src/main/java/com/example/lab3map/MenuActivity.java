@@ -46,7 +46,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sharedPreferences.edit().putString("priceTotal",price_total.getText().toString()).apply();
-                Intent intent = new Intent(MenuActivity.this, OrderActivity.class);
+                Intent intent = new Intent(MenuActivity.this, QR_CodeActivity.class);
                 startActivity(intent);
             }
         });

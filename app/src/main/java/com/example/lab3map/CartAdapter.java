@@ -13,9 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.google.gson.Gson;
+
+import java.util.HashMap;
 
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
+    HashMap<String, String> HashMap = new HashMap<String, String>();
     String data1[], data2[], number;
     float total=0;
     int image[];
@@ -57,10 +61,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         TextView myText1, myText2;
         ImageView myImage;
         ElegantNumberButton button;
-        String num;
         float price=0;
         float oldnum = 0;
-        int count = 0;
 
         public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -68,11 +70,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             myText2 = itemView.findViewById(R.id.text_food_price);
             myImage = itemView.findViewById(R.id.image_cart);
             sharedPreferences = itemView.getContext().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
+
             button = (ElegantNumberButton) itemView.findViewById(R.id.number_button);
             button.setOnClickListener(new ElegantNumberButton.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    count=count+1;
                     String num = button.getNumber();
                     float num1 =Integer.parseInt(num);
                     total-=oldnum*price;
@@ -80,7 +82,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     oldnum=num1;
                     TextView price_total = (TextView) itemView.getRootView().findViewById(R.id.price_total);
                     price_total.setText(String.valueOf(total));
-                    sharedPreferences.edit().putString("itemname",myText1.getText().toString()).apply();
+                    HashMap.put("itemname", myText1.getText().toString());
+                    HashMap.put("count", num);
+                    Gson gson = new Gson();
+                    String hashMapString = gson.toJson(HashMap);
+//                    sharedPreferences = itemView.getContext().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
+                    sharedPreferences.edit().putString("hashString", hashMapString).apply();
                 }
             });
         }

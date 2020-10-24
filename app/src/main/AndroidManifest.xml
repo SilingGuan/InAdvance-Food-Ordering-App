@@ -24,7 +24,6 @@
         </activity>
 <!--        android:parentActivityName=".SecondActivity"-->
 
-        <activity android:name=".OrderActivity" />
         <activity android:name=".MenuActivity" />
         <activity
             android:name=".SignUpActivity"

@@ -1,7 +1,7 @@
 package com.example.lab3map;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -12,20 +12,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.common.reflect.TypeToken;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.storage.FirebaseStorage;
+
 import java.io.File;
 import java.io.FileOutputStream;
-
+import java.util.HashMap;
 
 public class QR_CodeActivity extends AppCompatActivity {
 
@@ -108,6 +112,24 @@ public class QR_CodeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Gson gson = new Gson();
+//        setContentView(R.layout.activity_order);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.lab3map", MODE_PRIVATE);
+        String text = sharedPreferences.getString("priceTotal","");
+        String text1 = sharedPreferences.getString("restaurantname","");
+        String text2 = sharedPreferences.getString("restaurantaddress","");
+        String storedHashMapString = sharedPreferences.getString("hashString", "");
+        java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+        HashMap<String, String> HashMap2 = gson.fromJson(storedHashMapString, type);
+        TextView textView = (TextView)findViewById(R.id.tv);
+        TextView textView1 = (TextView)findViewById(R.id.tv1);
+        TextView textView2 = (TextView)findViewById(R.id.tv2);
+        String text3 = "Orders: \n" + HashMap2.get("itemname") + "        x" + HashMap2.get("count");
+
+        textView.setText("Total: $"+text);
+        textView1.setText("Restaurant: "+text1+"\nAddress: "+text2);
+        textView2.setText(text3);
     }
 
 
@@ -160,6 +182,8 @@ public class QR_CodeActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
         startActivity(Intent.createChooser(shareInt,"Share QR Code via"));
+
+
 
     }
 
