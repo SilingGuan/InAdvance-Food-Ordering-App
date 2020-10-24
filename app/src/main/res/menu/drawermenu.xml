@@ -16,6 +16,11 @@
              android:icon="@drawable/ic_user_icon"
              android:title="About Me"
              />
+    <item
+        android:id="@+id/qr_code"
+        android:icon="@drawable/ic_qr_code"
+        android:title="QR Code"
+        />
 
 <item
     android:id="@+id/itemTitle_1"
