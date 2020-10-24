@@ -11,26 +11,32 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class OrderActivity extends AppCompatActivity {
-    private Button generate;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        generate = (Button) findViewById(R.id.bt_generate);
+        Button generate = (Button) findViewById(R.id.bt_generate);
 
         setContentView(R.layout.activity_order);
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.lab3map", MODE_PRIVATE);
         String text = sharedPreferences.getString("priceTotal","");
+        String text1 = sharedPreferences.getString("restaurantname","");
+        String text2 = sharedPreferences.getString("restaurantaddress","");
+        String text3 = sharedPreferences.getString("itemname","");
         TextView textView = (TextView)findViewById(R.id.tv);
-        textView.setText("Your Order: $"+text);
+        TextView textView1 = (TextView)findViewById(R.id.tv1);
+        TextView textView2 = (TextView)findViewById(R.id.tv2);
+        textView.setText("Total: $"+text);
+        textView1.setText("Restaurant: "+text1+"\nAddress: "+text2);
+        textView2.setText("Orders: \n"+ text3 +"       " +"x");
 
 
 //        generate.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Intent intent = new Intent(OrderActivity.this, SecondActivity.class);
-//                startActivity(intent);
+//                Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+//                startActivity(intent,savedInstanceState);
 //            }
 //        });
     }
