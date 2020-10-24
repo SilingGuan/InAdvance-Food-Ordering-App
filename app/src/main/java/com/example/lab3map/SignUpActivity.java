@@ -9,8 +9,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +32,10 @@ import java.util.Map;
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText fName, email1, password1, password2;
-    private Button signupbutton;
-    private TextView userlogin;
+    private Button signupbutton, userlogin;
     private EditText phoneNum;
+    private RadioGroup radioGroup_signup;
+    private RadioButton isUser, isBusinessOwner;
    // private database db;
    private FirebaseAuth mAuth;
     FirebaseFirestore firestore;
@@ -48,10 +52,23 @@ public class SignUpActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Sign Up Page");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        if(mAuth.getCurrentUser() !=null){
-//            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-//            finish();
-//        }
+        radioGroup_signup = findViewById(R.id.rg_signup);
+        isUser = findViewById(R.id.rb_user);
+        isBusinessOwner = findViewById(R.id.rd_bussinessOwner);
+
+
+        isUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                return;
+            }
+        });
+        isBusinessOwner.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                return;
+            }
+        });
 
         signupbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +78,8 @@ public class SignUpActivity extends AppCompatActivity {
                 final String phone = phoneNum.getText().toString().trim();
                 String pwd = password1.getText().toString().trim();
                 String pwd1 = password2.getText().toString().trim();
+
+
 
                 if(TextUtils.isEmpty(fullName)){
                     fName.setError("User Name is Required");
@@ -83,6 +102,12 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(!(isUser.isChecked() || isBusinessOwner.isChecked())){
+                    Toast.makeText(SignUpActivity.this,"Select Account Type",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
                 mAuth.createUserWithEmailAndPassword(email,pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -95,13 +120,25 @@ public class SignUpActivity extends AppCompatActivity {
                               user.put("fullName",fullName);
                               user.put("email",email);
                               user.put("phone",phone);
+                              if(isUser.isChecked()){
+                                  user.put("isUser","1");
+                              }
+                              if(isBusinessOwner.isChecked()){
+                                  user.put("isBusinessOwner","1");
+                              }
+
                               documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                   @Override
                                   public void onSuccess(Void aVoid) {
                                       Log.d(TAG, "onSuccess: user profile is created for" + userID);
                                   }
                               });
-                              startActivity(new Intent (getApplicationContext(),SecondActivity.class));
+                             if(isUser.isChecked()){
+                                 startActivity(new Intent (getApplicationContext(),SecondActivity.class));
+                             }else if(isBusinessOwner.isChecked()){
+                                 startActivity(new Intent (getApplicationContext(),BusinessOwner.class));
+                             }
+
                           }else{
                               Toast.makeText(SignUpActivity.this,"Error!" +task.getException(),Toast.LENGTH_LONG).show();
                           }
@@ -154,7 +191,7 @@ public class SignUpActivity extends AppCompatActivity {
         password1 =  findViewById(R.id.spassword1);
         password2 =  findViewById(R.id.spassword2);
         signupbutton =  findViewById(R.id.bsignup);
-        userlogin =  findViewById(R.id.tvlogin);
+        userlogin =  findViewById(R.id.bt_login);
     }
 
 
