@@ -16,10 +16,11 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
-    HashMap<String, String> HashMap = new HashMap<String, String>();
+    LinkedHashMap<String, String> HashMap = new LinkedHashMap<String, String>();
     String data1[], data2[], number;
     float total=0;
     int image[];
@@ -82,8 +83,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     oldnum=num1;
                     TextView price_total = (TextView) itemView.getRootView().findViewById(R.id.price_total);
                     price_total.setText(String.valueOf(total));
-                    HashMap.put("itemname", myText1.getText().toString());
-                    HashMap.put("count", num);
+                    HashMap.put(myText1.getText().toString(),num);
                     Gson gson = new Gson();
                     String hashMapString = gson.toJson(HashMap);
 //                    sharedPreferences = itemView.getContext().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
