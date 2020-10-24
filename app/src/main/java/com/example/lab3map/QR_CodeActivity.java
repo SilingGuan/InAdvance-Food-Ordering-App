@@ -17,6 +17,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +34,8 @@ import com.google.zxing.common.BitMatrix;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Set;
 
 public class QR_CodeActivity extends AppCompatActivity {
 
@@ -119,13 +125,19 @@ public class QR_CodeActivity extends AppCompatActivity {
         String text = sharedPreferences.getString("priceTotal","");
         String text1 = sharedPreferences.getString("restaurantname","");
         String text2 = sharedPreferences.getString("restaurantaddress","");
+        String text3="Orders: \n";
         String storedHashMapString = sharedPreferences.getString("hashString", "");
-        java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>(){}.getType();
-        HashMap<String, String> HashMap2 = gson.fromJson(storedHashMapString, type);
+        java.lang.reflect.Type type = new TypeToken<LinkedHashMap<String, String>>(){}.getType();
+        LinkedHashMap<String, String> HashMap2 = gson.fromJson(storedHashMapString, type);
         TextView textView = (TextView)findViewById(R.id.tv);
         TextView textView1 = (TextView)findViewById(R.id.tv1);
         TextView textView2 = (TextView)findViewById(R.id.tv2);
-        String text3 = "Orders: \n" + HashMap2.get("itemname") + "        x" + HashMap2.get("count");
+        Set<String> keys = HashMap2.keySet();
+        for(String key: keys){
+             text3+= key + "        X " + HashMap2.get(key)+"\n";
+        }
+
+
 
         textView.setText("Total: $"+text);
         textView1.setText("Restaurant: "+text1+"\nAddress: "+text2);
