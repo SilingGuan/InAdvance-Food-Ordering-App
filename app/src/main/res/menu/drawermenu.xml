@@ -18,8 +18,8 @@
              />
     <item
         android:id="@+id/qr_code"
-        android:icon="@drawable/ic_qr_code"
-        android:title="QR Code"
+        android:icon="@drawable/ic_order"
+        android:title="My Order"
         />
 
 <item

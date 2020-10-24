@@ -47,16 +47,12 @@ public class QR_CodeActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore firestore;
     StorageReference storageReference;
+    String text4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_r__code);
-
-        // Action bar: return to previous page
-//        if(NavUtils.getParentActivityName(QR_CodeActivity.this)!= null){
-//            getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        }
 
 
         text = findViewById(R.id.text);
@@ -69,18 +65,39 @@ public class QR_CodeActivity extends AppCompatActivity {
         share_qr = findViewById(R.id.qr_share);
         share_qr.setVisibility(View.INVISIBLE);
 
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.lab3map", MODE_PRIVATE);
+        String text = sharedPreferences.getString("priceTotal","");
+        String text1 = sharedPreferences.getString("restaurantname","");
+        String text2 = sharedPreferences.getString("restaurantaddress","");
+        String text3 = "Orders: \n";
+        String storedHashMapString = sharedPreferences.getString("hashString", "");
+        java.lang.reflect.Type type = new TypeToken<LinkedHashMap<String, String>>(){}.getType();
+        LinkedHashMap<String, String> HashMap2 = gson.fromJson(storedHashMapString, type);
+        TextView textView = (TextView)findViewById(R.id.tv);
+//        TextView textView1 = (TextView)findViewById(R.id.tv1);
+//        TextView textView2 = (TextView)findViewById(R.id.tv2);
+        Set<String> keys = HashMap2.keySet();
+        for(String key: keys){
+            text3+= key + "        X " + HashMap2.get(key)+"\n";
+        }
+
+
+        text4 = "Total: $"+text+"\n"+"\n"+"Restaurant: "+text1+"\nAddress: "+text2+"\n"+"\n"+text3;
+        textView.setText(text4);
 
 
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (text.getText().toString().trim().length() == 0){
+                if (text4.length() == 0){
                     Toast.makeText(QR_CodeActivity.this, "Enter Text", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     try{
-                        bitmap = textToImageEncode(text.getText().toString());
+                        bitmap = textToImageEncode(text4);
                         iv.setImageBitmap(bitmap);
+                        generate.setVisibility(View.INVISIBLE);
                         download.setVisibility(View.VISIBLE);
                         download.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -119,27 +136,7 @@ public class QR_CodeActivity extends AppCompatActivity {
             }
         });
 
-        Gson gson = new Gson();
-//        setContentView(R.layout.activity_order);
-        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.lab3map", MODE_PRIVATE);
-        String text = sharedPreferences.getString("priceTotal","");
-        String text1 = sharedPreferences.getString("restaurantname","");
-        String text2 = sharedPreferences.getString("restaurantaddress","");
-        String text3 = "Orders: \n";
-        String storedHashMapString = sharedPreferences.getString("hashString", "");
-        java.lang.reflect.Type type = new TypeToken<LinkedHashMap<String, String>>(){}.getType();
-        LinkedHashMap<String, String> HashMap2 = gson.fromJson(storedHashMapString, type);
-        TextView textView = (TextView)findViewById(R.id.tv);
-//        TextView textView1 = (TextView)findViewById(R.id.tv1);
-//        TextView textView2 = (TextView)findViewById(R.id.tv2);
-        Set<String> keys = HashMap2.keySet();
-        for(String key: keys){
-             text3+= key + "        X " + HashMap2.get(key)+"\n";
-        }
 
-
-        String text4 = "Total: $"+text+"\n"+"\n"+"Restaurant: "+text1+"\nAddress: "+text2+"\n"+"\n"+text3;
-        textView.setText(text4);
 
     }
 
