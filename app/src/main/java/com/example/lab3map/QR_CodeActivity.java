@@ -96,7 +96,7 @@ public class QR_CodeActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "code_scanner"
                                         , null);
-                                Toast.makeText(QR_CodeActivity.this, "Saved to Gralary", Toast.LENGTH_SHORT)
+                                Toast.makeText(QR_CodeActivity.this, "Saved to Gallery", Toast.LENGTH_SHORT)
                                         .show();
                             }
                         });
