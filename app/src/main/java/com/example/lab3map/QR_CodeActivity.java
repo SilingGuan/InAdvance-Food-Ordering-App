@@ -1,10 +1,12 @@
 package com.example.lab3map;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -17,20 +19,20 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import androidx.core.app.NavUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
+import java.io.File;
+import java.io.FileOutputStream;
+
 
 public class QR_CodeActivity extends AppCompatActivity {
 
     public final static int QRCodeWidth = 500;
     Bitmap bitmap;
     private EditText text;
-    private Button download;
-    private Button generate;
-    private Button return_home;
+    private Button download,generate,return_home,share_qr;
     private ImageView iv;
     FirebaseAuth mAuth;
     FirebaseFirestore firestore;
@@ -54,7 +56,8 @@ public class QR_CodeActivity extends AppCompatActivity {
         iv = findViewById(R.id.image);
         return_home = findViewById(R.id.qr_return_home);
         return_home.setVisibility(View.INVISIBLE);
-
+        share_qr = findViewById(R.id.qr_share);
+        share_qr.setVisibility(View.INVISIBLE);
 
 
 
@@ -78,6 +81,8 @@ public class QR_CodeActivity extends AppCompatActivity {
                                         .show();
                             }
                         });
+
+                        // return to home page
                         return_home.setVisibility(View.VISIBLE);
                         return_home.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -85,6 +90,15 @@ public class QR_CodeActivity extends AppCompatActivity {
                                 Intent intent;
                                 intent = new Intent(QR_CodeActivity.this,SecondActivity.class);
                                 startActivity(intent);
+                            }
+                        });
+
+                        //share qr code
+                        share_qr.setVisibility(View.VISIBLE);
+                        share_qr.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                shareQR_Code();
                             }
                         });
 
@@ -120,6 +134,33 @@ public class QR_CodeActivity extends AppCompatActivity {
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
         bitmap.setPixels(pixels, 0, 500, 0, 0, bitMatrixWidth, bitMatrixHeight);
         return bitmap;
+    }
+
+    // share QR Code
+    private void shareQR_Code() {
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        BitmapDrawable drawable = (BitmapDrawable) iv.getDrawable();
+        bitmap = drawable.getBitmap();
+        File file = new File(getExternalCacheDir()+"/" +getResources().getString(R.string.app_name)+".png");
+        Intent shareInt;
+
+        try{
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            shareInt = new Intent(Intent.ACTION_SEND);
+            shareInt.setType("image/*");
+            shareInt.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
+            shareInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        startActivity(Intent.createChooser(shareInt,"Share QR Code via"));
+
     }
 
 }
