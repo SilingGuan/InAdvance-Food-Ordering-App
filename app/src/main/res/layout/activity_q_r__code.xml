@@ -50,8 +50,8 @@ tools:context=".QR_CodeActivity">
 
     <TextView
         android:id="@+id/tv"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="456dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -60,36 +60,10 @@ tools:context=".QR_CodeActivity">
         android:layout_marginStart="18dp"
         android:layout_marginTop="248dp"
         android:layout_marginEnd="17dp"
-        android:layout_marginBottom="464dp"
+        android:layout_marginBottom="27dp"
         android:text="TextView" />
 
-    <TextView
-        android:id="@+id/tv1"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="285dp"
-        android:layout_marginEnd="14dp"
-        android:text="TextView" />
 
-    <TextView
-        android:id="@+id/tv2"
-        android:layout_width="wrap_content"
-        android:layout_height="380dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="331dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
-        android:text="TextView" />
 
 
 </RelativeLayout>
