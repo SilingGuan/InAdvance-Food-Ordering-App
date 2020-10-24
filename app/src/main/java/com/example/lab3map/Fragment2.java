@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +20,21 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Fragment2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment2 extends Fragment {
-
+public class Fragment2 extends Fragment implements RecyclerViewAdapter.RecyclerViewClickListener{
+    private List<RecyclerViewRow> recyclerViewRowList;
     SharedPreferences sharedPreferences;
     private Fragment2Listener listener;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
-    private RecyclerViewAdapter.RecyclerViewClickListener listener1;
+//    private RecyclerViewAdapter.RecyclerViewClickListener listener1;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private  static Fragment Instance;
@@ -114,23 +118,20 @@ public class Fragment2 extends Fragment {
 //        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList,Fragment2.this);
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList, (RecyclerViewAdapter.RecyclerViewClickListener) RecyclerViewAdapter.RecyclerViewClickListener);
         recyclerView.setAdapter(recyclerViewAdapter);
-        setOnClickListener();
-
-
-
+//        setOnClickListener();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private void setOnClickListener() {
-        listener1 = new RecyclerViewAdapter.RecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), MenuActivity.class);
-                startActivity(intent);
-            }
-        };
-    }
+//    private void setOnClickListener() {
+//        listener1 = new RecyclerViewAdapter.RecyclerViewClickListener() {
+//            @Override
+//            public void onClick(View view, int position) {
+//                Intent intent = new Intent(getActivity(), MenuActivity.class);
+//                startActivity(intent);
+//            }
+//        };
+//    }
 
 
     @Override
@@ -138,6 +139,13 @@ public class Fragment2 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_2, container, false);
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        recyclerViewRowList.get(position);
+        Intent intent = new Intent(getActivity(), MenuActivity.class);
+        startActivity(intent);
     }
 
     public interface Fragment2Listener{
