@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Project277-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Project277-app.iml" group="lab3map/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="lab3map/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lab3map.iml" filepath="$PROJECT_DIR$/.idea/modules/lab3map.iml" group="lab3map" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/lab3map-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/lab3map-app.iml" group="lab3map/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lab3map.iml" filepath="$PROJECT_DIR$/.idea/modules/lab3map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/lab3map.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/lab3map.app.iml" />
     </modules>
   </component>
 </project>
