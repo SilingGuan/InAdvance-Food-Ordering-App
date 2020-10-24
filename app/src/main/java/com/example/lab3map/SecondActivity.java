@@ -176,7 +176,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
                    case R.id.logout:
                        FirebaseAuth.getInstance().signOut();
-                       startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                       startActivity(new Intent(getApplicationContext(),MainActivity.class));
                        finish();
                        break;
                     case R.id.login:
@@ -222,15 +222,15 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         }
     }
 
-//    @Override
-//    public void onBackPressed() {
-//
-//        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//            getSupportFragmentManager().popBackStack();
-//        } else{
-//            finish();
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else{
+            finish();
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
