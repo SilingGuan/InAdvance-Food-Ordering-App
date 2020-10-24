@@ -15,10 +15,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+
+import org.jetbrains.annotations.Nullable;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
     private EditText email, password;
     private Button loginbutton;
     private Button usersignup;
-    private database db;
-   // ProgressBar progressBar;
+   // private database db;
     private FirebaseAuth mAuth;
+    FirebaseFirestore firestore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +48,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        getSupportActionBar().setTitle("Login Page");
 
-        db = new database(this);
+      //  db = new database(this);
         mAuth = FirebaseAuth.getInstance();
-        //username = (EditText)findViewById(R.id.username);
-        email = (EditText)findViewById(R.id.email);
-        password = (EditText) findViewById(R.id.password);
-        loginbutton = (Button) findViewById(R.id.blogin);
-        usersignup = (Button) findViewById(R.id.tvsignup);
-        sharedPreferences = this.getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
+        loginbutton =  findViewById(R.id.blogin);
+        usersignup = findViewById(R.id.tvsignup);
+      //  sharedPreferences = this.getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
 
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,12 +79,34 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(MainActivity.this,"Logged In successfully",Toast.LENGTH_LONG).show();
-                            startActivity(new Intent (getApplicationContext(),SecondActivity.class));
+                            DocumentReference dr = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            dr.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if(documentSnapshot.getString("isUser") != null){
+                                        startActivity(new Intent(getApplicationContext(), SecondActivity.class));
+                                        finish();
+                                    }else if(documentSnapshot.getString("isBusinessOwner") != null){
+                                        startActivity(new Intent(getApplicationContext(), BusinessOwner.class));
+                                        finish();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    FirebaseAuth.getInstance().signOut();
+                                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                    finish();
+                                }
+                            });
+
                         }else{
                             Toast.makeText(MainActivity.this,"Error!" +task.getException(),Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+            }
+        });
 
 
 
@@ -91,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
 //                }else{
 //                    Toast.makeText(MainActivity.this, "Incorrect Username or Password", Toast.LENGTH_SHORT).show();
 //                }
-            }
-        });
+
 
         usersignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,12 +133,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-//    }
-
 }

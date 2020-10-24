@@ -18,11 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".QR_CodeActivity"
-                  android:label="InAdvance"
-                  android:theme="@style/Theme.MaterialComponents.Light">
-        </activity>
-<!--        android:parentActivityName=".SecondActivity"-->
+        <activity android:name=".BusinessOwner"></activity>
+
+        <activity
+            android:name=".QR_CodeActivity"
+            android:label="InAdvance"
+            android:theme="@style/Theme.MaterialComponents.Light"></activity> <!-- android:parentActivityName=".SecondActivity" -->
 
         <activity android:name=".OrderActivity" />
         <activity android:name=".MenuActivity" />
@@ -42,14 +43,15 @@
             android:name=".SecondActivity"
             android:label="InAdvance"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-<!--            <intent-filter>-->
-<!--              <action android:name="android.intent.action.Main" />-->
 
-<!--              <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.Main" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
 
         </activity>
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
