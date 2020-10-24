@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,13 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -30,12 +28,14 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.Calendar;
 
 public class QR_CodeActivity extends AppCompatActivity {
 
@@ -47,14 +47,24 @@ public class QR_CodeActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore firestore;
     StorageReference storageReference;
-    String text4;
+    String orderDetail;
+    DocumentReference documentReference;
+    String userID;
+    String orderID;
+    final String TAG ="ABC";
+    String price;
+    String restaurantName;
+    String restaurantAddress;
+    String orderList;
+    String priceWithSign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_r__code);
 
-
+        mAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
         text = findViewById(R.id.text);
         download = findViewById(R.id.download);
         download.setVisibility(View.INVISIBLE);
@@ -65,37 +75,19 @@ public class QR_CodeActivity extends AppCompatActivity {
         share_qr = findViewById(R.id.qr_share);
         share_qr.setVisibility(View.INVISIBLE);
 
-        Gson gson = new Gson();
-        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.lab3map", MODE_PRIVATE);
-        String text = sharedPreferences.getString("priceTotal","");
-        String text1 = sharedPreferences.getString("restaurantname","");
-        String text2 = sharedPreferences.getString("restaurantaddress","");
-        String text3 = "Orders: \n";
-        String storedHashMapString = sharedPreferences.getString("hashString", "");
-        java.lang.reflect.Type type = new TypeToken<LinkedHashMap<String, String>>(){}.getType();
-        LinkedHashMap<String, String> HashMap2 = gson.fromJson(storedHashMapString, type);
-        TextView textView = (TextView)findViewById(R.id.tv);
-//        TextView textView1 = (TextView)findViewById(R.id.tv1);
-//        TextView textView2 = (TextView)findViewById(R.id.tv2);
-        Set<String> keys = HashMap2.keySet();
-        for(String key: keys){
-            text3+= key + "        X " + HashMap2.get(key)+"\n";
-        }
-
-
-        text4 = "Total: $"+text+"\n"+"\n"+"Restaurant: "+text1+"\nAddress: "+text2+"\n"+"\n"+text3;
-        textView.setText(text4);
+        displayOrder();
+        saveOrderToDatabase();
 
 
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (text4.length() == 0){
+                if (orderID.length() == 0){
                     Toast.makeText(QR_CodeActivity.this, "Enter Text", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     try{
-                        bitmap = textToImageEncode(text4);
+                        bitmap = textToImageEncode(orderID);
                         iv.setImageBitmap(bitmap);
                         generate.setVisibility(View.INVISIBLE);
                         download.setVisibility(View.VISIBLE);
@@ -135,9 +127,6 @@ public class QR_CodeActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
 
@@ -190,9 +179,56 @@ public class QR_CodeActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
         startActivity(Intent.createChooser(shareInt,"Share QR Code via"));
+    }
 
+    //display order detail
+    private void displayOrder(){
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.lab3map", MODE_PRIVATE);
+        price = sharedPreferences.getString("priceTotal","");
+        priceWithSign = "$ " + price;
+        restaurantName = sharedPreferences.getString("restaurantname","");
+        restaurantAddress = sharedPreferences.getString("restaurantaddress","");
+        orderList = "Orders: \n";
+        String storedHashMapString = sharedPreferences.getString("hashString", "");
+        java.lang.reflect.Type type = new TypeToken<LinkedHashMap<String, String>>(){}.getType();
+        LinkedHashMap<String, String> HashMap2 = gson.fromJson(storedHashMapString, type);
+        TextView textView = (TextView)findViewById(R.id.tv);
+//        TextView textView1 = (TextView)findViewById(R.id.tv1);
+//        TextView textView2 = (TextView)findViewById(R.id.tv2);
+        Set<String> keys = HashMap2.keySet();
+        int i = 1;
+        for(String key: keys){
+            orderList+= " " + i +". Food Name: "+ key + "       Food Amount: " + HashMap2.get(key)+";\n";
+            i++;
+        }
+        orderDetail = "Total: $"+price+"\n"+"\n"+"Restaurant: "+restaurantName+"\nAddress: "+restaurantAddress+"\n"+"\n"+orderList;
+        textView.setText(orderDetail);
+    }
 
+    // upload order detail to database
+    private void saveOrderToDatabase(){
 
+        userID = mAuth.getCurrentUser().getUid();
+        documentReference = firestore.collection("orders").document();
+        Date currentTime = Calendar.getInstance().getTime();
+
+        Map<String,Object> order = new HashMap<>();
+        order.put("userId",userID);
+        order.put("orderTime",currentTime);
+        order.put("priceTotal",priceWithSign);
+        order.put("restaurantName",restaurantName);
+        order.put("restaurantAddress",restaurantAddress);
+        order.put("orderList",orderList);
+        documentReference.set(order).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "onSuccess: order info is saved" + orderID);
+            }
+        });
+        orderID = firestore.collection("orders").document().getId();
+        Log.d(TAG,"ORDER ID: " + orderID);
+        Toast.makeText(getApplicationContext(),"Saved the Order info",Toast.LENGTH_SHORT).show();
     }
 
 }
