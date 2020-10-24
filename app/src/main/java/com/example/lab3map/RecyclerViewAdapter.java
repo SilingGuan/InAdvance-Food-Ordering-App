@@ -1,6 +1,8 @@
 package com.example.lab3map;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        SharedPreferences sharedPreferences;
         public TextView textViewName;
         public TextView textViewAddress;
         public TextView textViewRating;
@@ -59,11 +62,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             textViewName = (TextView) itemView.findViewById(R.id.tv_name);
             textViewAddress = (TextView) itemView.findViewById(R.id.tv_address);
             textViewRating = (TextView) itemView.findViewById(R.id.tv_rating);
+            sharedPreferences = itemView.getContext().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
             itemView.setOnClickListener(this);
 
             listener = new RecyclerViewAdapter.RecyclerViewClickListener() {
                 @Override
                 public void onClick(View view, int position) {
+                    sharedPreferences.edit().putString("restaurantname",textViewName.getText().toString()).apply();
+                    sharedPreferences.edit().putString("restaurantaddress",textViewAddress.getText().toString()).apply();
                     Intent intent = new Intent(view.getContext(), MenuActivity.class);
                     view.getContext().startActivity((intent));
                 }

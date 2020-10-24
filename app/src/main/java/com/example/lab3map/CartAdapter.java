@@ -1,6 +1,7 @@
 package com.example.lab3map;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,24 +53,26 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
+        SharedPreferences sharedPreferences;
         TextView myText1, myText2;
         ImageView myImage;
         ElegantNumberButton button;
         String num;
         float price=0;
         float oldnum = 0;
+        int count = 0;
 
         public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             myText1 = itemView.findViewById(R.id.text_food_name);
             myText2 = itemView.findViewById(R.id.text_food_price);
             myImage = itemView.findViewById(R.id.image_cart);
-
-
+            sharedPreferences = itemView.getContext().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
             button = (ElegantNumberButton) itemView.findViewById(R.id.number_button);
             button.setOnClickListener(new ElegantNumberButton.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    count=count+1;
                     String num = button.getNumber();
                     float num1 =Integer.parseInt(num);
                     total-=oldnum*price;
@@ -77,6 +80,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     oldnum=num1;
                     TextView price_total = (TextView) itemView.getRootView().findViewById(R.id.price_total);
                     price_total.setText(String.valueOf(total));
+                    sharedPreferences.edit().putString("itemname",myText1.getText().toString()).apply();
                 }
             });
         }
