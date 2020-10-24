@@ -25,7 +25,6 @@
             android:label="InAdvance"
             android:theme="@style/Theme.MaterialComponents.Light"></activity> <!-- android:parentActivityName=".SecondActivity" -->
 
-        <activity android:name=".OrderActivity" />
         <activity android:name=".MenuActivity" />
         <activity
             android:name=".SignUpActivity"
