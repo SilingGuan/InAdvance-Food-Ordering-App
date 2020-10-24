@@ -125,23 +125,22 @@ public class QR_CodeActivity extends AppCompatActivity {
         String text = sharedPreferences.getString("priceTotal","");
         String text1 = sharedPreferences.getString("restaurantname","");
         String text2 = sharedPreferences.getString("restaurantaddress","");
-        String text3="Orders: \n";
+        String text3 = "Orders: \n";
         String storedHashMapString = sharedPreferences.getString("hashString", "");
         java.lang.reflect.Type type = new TypeToken<LinkedHashMap<String, String>>(){}.getType();
         LinkedHashMap<String, String> HashMap2 = gson.fromJson(storedHashMapString, type);
         TextView textView = (TextView)findViewById(R.id.tv);
-        TextView textView1 = (TextView)findViewById(R.id.tv1);
-        TextView textView2 = (TextView)findViewById(R.id.tv2);
+//        TextView textView1 = (TextView)findViewById(R.id.tv1);
+//        TextView textView2 = (TextView)findViewById(R.id.tv2);
         Set<String> keys = HashMap2.keySet();
         for(String key: keys){
              text3+= key + "        X " + HashMap2.get(key)+"\n";
         }
 
 
+        String text4 = "Total: $"+text+"\n"+"\n"+"Restaurant: "+text1+"\nAddress: "+text2+"\n"+"\n"+text3;
+        textView.setText(text4);
 
-        textView.setText("Total: $"+text);
-        textView1.setText("Restaurant: "+text1+"\nAddress: "+text2);
-        textView2.setText(text3);
     }
 
 
