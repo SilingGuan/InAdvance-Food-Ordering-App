@@ -39,6 +39,7 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/ll_iv_camera"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -68,6 +69,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_iv_photo_library"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
@@ -108,6 +110,7 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/ll_iv_camera_permission"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -137,6 +140,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_iv_me"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
@@ -146,6 +150,7 @@
                 android:weightSum="3">
 
                 <ImageView
+                    android:id="@+id/iv_me"
                     android:layout_width="25dp"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
@@ -176,6 +181,7 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/ll_iv_setting"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -184,6 +190,7 @@
                 android:weightSum="3">
 
                 <ImageView
+                    android:id="@+id/iv_setting"
                     android:layout_width="25dp"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
@@ -204,6 +211,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_iv_signout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
@@ -241,21 +249,20 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_orderId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="30dp"
-                    android:textStyle="bold" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_orderId"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="30dp"-->
+<!--                    android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/tv_orderAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_orderAll"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content" />-->
 
             </LinearLayout>
         </RelativeLayout>

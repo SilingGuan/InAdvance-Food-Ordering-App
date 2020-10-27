@@ -12,7 +12,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,8 +30,9 @@ import java.io.InputStream;
 public class BusinessOwner extends AppCompatActivity {
 
     public static final int CAMERA_PERMISSION_CODE = 100;
-    private TextView displayOrderId, tv_businessOwner;
-    private ImageView camera_permission, scan, scan_gallery, iv_signout;
+    private TextView tv_businessOwner;
+    private LinearLayout camera_permission, scan, scan_gallery, iv_signout;
+    String contents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +40,10 @@ public class BusinessOwner extends AppCompatActivity {
         setContentView(R.layout.activity_business_owner);
 
         tv_businessOwner = findViewById(R.id.header_title);
-        iv_signout = findViewById(R.id.iv_signout);
-        camera_permission = findViewById(R.id.iv_camera_permission);
-        scan = findViewById(R.id.iv_camera);
-        scan_gallery = findViewById(R.id.iv_photo_library);
-        displayOrderId = findViewById(R.id.tv_orderId);
+        iv_signout = findViewById(R.id.ll_iv_signout);
+        camera_permission = findViewById(R.id.ll_iv_camera_permission);
+        scan = findViewById(R.id.ll_iv_camera);
+        scan_gallery = findViewById(R.id.ll_iv_photo_library);
 
 
         camera_permission.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +118,6 @@ public class BusinessOwner extends AppCompatActivity {
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 try {
                     Bitmap bMap = selectedImage;
-                    String contents = null;
                     int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
 
                     bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
@@ -128,9 +127,9 @@ public class BusinessOwner extends AppCompatActivity {
                     Reader reader = new MultiFormatReader();
                     Result result = reader.decode(bitmap);
                     contents = result.getText();
-                    displayOrderId.setText("Order ID:  " + contents);
-//                    Toast.makeText(getApplicationContext(),contents,Toast.LENGTH_LONG).show();
-
+                    Intent intent = new Intent(BusinessOwner.this,CustomerOrder.class);
+                    intent.putExtra("String", contents);
+                    startActivity(intent);
 
                 } catch (Exception e) {
                     e.printStackTrace();
