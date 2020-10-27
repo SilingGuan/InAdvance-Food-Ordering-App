@@ -144,31 +144,35 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
                   switch (menuItem.getItemId()) {
                    case R.id.logout:
-//                       onOptionsItemSelected(menuItem);
                        FirebaseAuth.getInstance().signOut();
                        finish();
                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
                        break;
                     case R.id.login:
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
                         finish();
+                        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
                         break;
 
-                   case R.id.me:
-                       THE_POSITION = 03;
-                       viewPager.setCurrentItem(THE_POSITION);
-                      // addFragmentToStack(fragment5);
-                       showMeFragment();
+                   case R.id.aboutMe:
+                       intent = new Intent(SecondActivity.this,AboutMe.class);
+                       startActivity(intent);
+
                        break;
+                    case R.id.settings:
+                          intent = new Intent(SecondActivity.this, SettingsActivity.class);
+                          startActivity(intent);
+                          break;
+
+                    case R.id.home:
                     case R.id.map:
                           THE_POSITION = 0;
                           viewPager.setCurrentItem(THE_POSITION);
-                          // addFragmentToStack(fragment5);
                           showMapFragment();
                           break;
-                    case R.id.qr_code:
-                          intent = new Intent(SecondActivity.this,QR_CodeActivity.class);
+
+                    case R.id.orderDetail:
+                          intent = new Intent(SecondActivity.this,OrderDetail.class);
                           startActivity(intent);
                           finish();
                           break;
