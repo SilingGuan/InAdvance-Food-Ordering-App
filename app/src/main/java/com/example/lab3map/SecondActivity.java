@@ -40,6 +40,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 public class SecondActivity extends AppCompatActivity implements GmapFragment.Fragment1Listener, Fragment2.Fragment2Listener{
+    private static String TAG = "ABC";
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -52,14 +53,12 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     FirebaseAuth mAuth;
     FirebaseFirestore firestore;
     StorageReference storageReference;
-    private static String TAG = "ABC";
-    TextView fullName;
+    private TextView fullName;
     ImageView profileImage;
-    String userID;
+    String userID, name;
     Uri imageUri;
     int THE_POSITION;
     Intent intent;
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -71,6 +70,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         firestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
+        // setup drawer
         setNavDrawer();
         StorageReference profileRef = storageReference.child("users/"+mAuth.getCurrentUser().getUid()+"profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -85,13 +85,11 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
         fragment1 = new GmapFragment();
 
-
         setViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
         fragment2 = Fragment2.newInstance();
         fragment3 = MeFragment.newInstance();
-
     }
 
 
@@ -128,56 +126,28 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         toggle.syncState();
 
 
-
-        View header = navigationView.getHeaderView(0);
-        profileImage = header.findViewById(R.id.profpic);
-
-
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //open gallery
-                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent,1000);
-            }
-        });
-
-
-
-         // setup drawer - display the user's full name
-        fullName = header.findViewById(R.id.header_fName);
-        userID = mAuth.getCurrentUser().getUid();
-        DocumentReference documentReference = firestore.collection("users").document(userID);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                String name = documentSnapshot.getString("fullName");
-                fullName.setText(" Welcome！ "+name);
-            }
-        });
-
+        // display user's full name in drawer
+        showHeaderNameAndImage();
 
 
         // drawer- select menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-
           @Override
            public boolean onNavigationItemSelected(MenuItem menuItem) {
+              if (menuItem.isChecked()) {
 
-
-              if (menuItem.isChecked()) menuItem.setChecked(false);
-              else menuItem.setChecked(true);
+                 menuItem.setChecked(false);
+              } else {
+                 menuItem.setChecked(true);
+              }
                 drawerLayout.closeDrawers();
 
-
-
                   switch (menuItem.getItemId()) {
-
                    case R.id.logout:
+//                       onOptionsItemSelected(menuItem);
                        FirebaseAuth.getInstance().signOut();
-                       startActivity(new Intent(getApplicationContext(),MainActivity.class));
                        finish();
+                       startActivity(new Intent(getApplicationContext(),MainActivity.class));
                        break;
                     case R.id.login:
                         FirebaseAuth.getInstance().signOut();
@@ -210,6 +180,35 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         });
     }
 
+    private void showHeaderNameAndImage() {
+        View header = navigationView.getHeaderView(0);
+        profileImage = header.findViewById(R.id.profpic);
+        fullName = header.findViewById(R.id.header_fName);
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open gallery
+                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGalleryIntent,1000);
+            }
+        });
+
+        // setup drawer - display the user's full name
+        userID = mAuth.getCurrentUser().getUid();
+        firestore.collection("users").document(userID).addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if( documentSnapshot != null){
+                    name = documentSnapshot.getString("fullName");
+                    fullName.setText(" Welcome！ "+ name);
+                }else{
+                    Log.d(TAG, "No such document");
+                }
+            }
+        });
+    }
+
     // switch - helper
     private void showMeFragment() {
         if (this.fragment3 == null) {
@@ -224,7 +223,6 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     @Override
     public void onBackPressed() {
-
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
         } else{
@@ -232,20 +230,21 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.me) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.me) {
+////            FirebaseAuth.getInstance().signOut();
+////            finish();
+////            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
     private void addFragmentToStack(Fragment fragment){
         if (!fragment.isVisible()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.viewPager, fragment).addToBackStack(null).commit();
