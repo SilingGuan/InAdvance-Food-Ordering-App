@@ -115,23 +115,11 @@ public class Fragment2 extends Fragment implements RecyclerViewAdapter.RecyclerV
             String rating = "Rating: "+hashMapList.get("rating")+"/5";
             recyclerViewRowList.add(new RecyclerViewRow(name,address,rating));
         }
-//        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList,Fragment2.this);
+
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList, (RecyclerViewAdapter.RecyclerViewClickListener) RecyclerViewAdapter.RecyclerViewClickListener);
         recyclerView.setAdapter(recyclerViewAdapter);
-//        setOnClickListener();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
-
-//    private void setOnClickListener() {
-//        listener1 = new RecyclerViewAdapter.RecyclerViewClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-//                Intent intent = new Intent(getActivity(), MenuActivity.class);
-//                startActivity(intent);
-//            }
-//        };
-//    }
 
 
     @Override
