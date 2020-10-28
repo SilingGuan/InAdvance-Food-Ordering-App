@@ -31,7 +31,7 @@ public class BusinessOwner extends AppCompatActivity {
 
     public static final int CAMERA_PERMISSION_CODE = 100;
     private TextView tv_businessOwner;
-    private LinearLayout camera_permission, scan, scan_gallery, iv_signout;
+    private LinearLayout camera_permission, scan, scan_gallery, iv_signout, iv_me,iv_setting;
     String contents;
 
     @Override
@@ -44,6 +44,8 @@ public class BusinessOwner extends AppCompatActivity {
         camera_permission = findViewById(R.id.ll_iv_camera_permission);
         scan = findViewById(R.id.ll_iv_camera);
         scan_gallery = findViewById(R.id.ll_iv_photo_library);
+        iv_me = findViewById(R.id.ll_iv_me);
+        iv_setting = findViewById(R.id.ll_iv_setting);
 
 
         camera_permission.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +76,22 @@ public class BusinessOwner extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logoutBusinessOwner(v);
+            }
+        });
+
+        iv_me.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(BusinessOwner.this,AboutMe.class);
+                startActivity(i);
+            }
+        });
+
+        iv_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(BusinessOwner.this,SettingsActivity.class);
+                startActivity(i);
             }
         });
     }

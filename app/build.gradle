@@ -39,11 +39,14 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-storage:17.0.0'
     implementation 'com.google.firebase:firebase-firestore:17.1.2'
+    //implementation 'com.google.firebase:firebase-firestore:19.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.google.firebase:firebase-storage:16.0.4'
+    //implementation 'com.google.firebase:firebase-storage:16.0.4'
     implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'androidx.preference:preference:1.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -59,6 +62,9 @@ dependencies {
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
     implementation 'com.google.android.gms:play-services-vision:20.1.0'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
-//    implementation 'com.google.firebase:firebase-database:19.5.0'
+    //implementation 'com.google.firebase:firebase-database:19.5.0'
+    implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'
+    // for About Me page implementation
+    implementation 'com.github.medyo:android-about-page:1.2.6'
 
 }

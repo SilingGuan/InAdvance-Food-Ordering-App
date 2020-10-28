@@ -11,13 +11,9 @@
        android:icon="@drawable/ic_map"
        android:title="Map"
        />
-         <item
-             android:id="@+id/me"
-             android:icon="@drawable/ic_user_icon"
-             android:title="About Me"
-             />
+
     <item
-        android:id="@+id/qr_code"
+        android:id="@+id/orderDetail"
         android:icon="@drawable/ic_order"
         android:title="My Order"
         />
@@ -25,17 +21,22 @@
 <item
     android:id="@+id/itemTitle_1"
     android:checked="true"
-    android:title="Communicate">
+    android:title="More">
     <menu>
+<!--   <item-->
+<!--       android:id="@+id/share"-->
+<!--       android:icon="@drawable/ic_share"-->
+<!--       android:title="Share"-->
+<!--       />-->
+        <item
+            android:id="@+id/aboutMe"
+            android:icon="@drawable/ic_user_icon"
+            android:title="About Me"
+            />
    <item
-       android:id="@+id/share"
-       android:icon="@drawable/ic_share"
-       android:title="Share"
-       />
-   <item
-       android:id="@+id/rateMe"
-       android:icon="@drawable/ic_rate"
-       android:title="Rate Us"
+       android:id="@+id/settings"
+       android:icon="@drawable/ic_setting"
+       android:title="Settings"
        />
     </menu>
 </item>

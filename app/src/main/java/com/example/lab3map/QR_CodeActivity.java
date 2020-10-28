@@ -1,5 +1,6 @@
 package com.example.lab3map;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,12 +12,12 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +46,6 @@ public class QR_CodeActivity extends AppCompatActivity {
     final String TAG = "ABC";
     public final static int QRCodeWidth = 500;
     Bitmap bitmap;
-    private EditText text;
     private TextView tv_displayOrderDetail, tv_displayOrderId;
     private Button download, generate, return_home, share_qr;
     private ImageView iv;
@@ -53,7 +53,7 @@ public class QR_CodeActivity extends AppCompatActivity {
     FirebaseFirestore firestore;
     StorageReference storageReference;
     DocumentReference documentReference;
-    String price, orderTime ,restaurantName, restaurantAddress, orderList, priceWithSign, userID, orderID, orderDetail;
+    String price, orderTime ,restaurantName, restaurantAddress, orderList, priceWithSign, userID, orderID,orderDetail;
 
 
 
@@ -64,7 +64,6 @@ public class QR_CodeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        text = findViewById(R.id.text);
         download = findViewById(R.id.download);
         download.setVisibility(View.INVISIBLE);
         generate = findViewById(R.id.generate);
@@ -85,14 +84,21 @@ public class QR_CodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (orderID.length() == 0) {
-
-                    Toast.makeText(QR_CodeActivity.this, "Enter Text", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QR_CodeActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
                         bitmap = textToImageEncode(orderID);
                         iv.setImageBitmap(bitmap);
                         Log.d(TAG,"Your Current Order ID:  "+ orderID);
                         generate.setVisibility(View.INVISIBLE);
+                        //updated the order ID into firebase
+                        updateOrderID(orderID);
+                        // pass orderID to MeFragment
+                        SharedPreferences preferences = getSharedPreferences("myKey", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("orderID",orderID);
+                        editor.apply();
+
                         download.setVisibility(View.VISIBLE);
                         download.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -131,6 +137,7 @@ public class QR_CodeActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     private Bitmap textToImageEncode(String value) throws WriterException {
@@ -202,7 +209,7 @@ public class QR_CodeActivity extends AppCompatActivity {
         Set<String> keys = HashMap2.keySet();
         int i = 1;
         for (String key : keys) {
-            orderList += " #" + i + ". Food Name: " + key + "       Amount: " + HashMap2.get(key) + ";\n ";
+            orderList += "#" + i + ". Food Name: " + key + "     Amount: " + HashMap2.get(key) + ";\n";
             i++;
         }
 
@@ -218,7 +225,7 @@ public class QR_CodeActivity extends AppCompatActivity {
         String userEmail = mAuth.getCurrentUser().getEmail();
         // create a new document under collection "orders"
         documentReference = firestore.collection("orders").document();
-
+        String temID = "";
         Map<String, Object> order = new HashMap<>();
         order.put("userId", userID);
         order.put("orderTime", orderTime);
@@ -227,15 +234,17 @@ public class QR_CodeActivity extends AppCompatActivity {
         order.put("restaurantAddress", restaurantAddress);
         order.put("orderList", orderList);
         order.put("userAccount", userEmail);
+        order.put("orderID",temID);
 
-        firestore.collection("orders").add(order).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        firestore.collection("orders")
+                .add(order).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 orderID = documentReference.getId();
                 tv_displayOrderId.append(" Order ID: " + orderID);
-
             }
         });
+
 //        documentReference.set(order).addOnSuccessListener(new OnSuccessListener<Void>() {
 //            @Override
 //            public void onSuccess(Void aVoid) {
@@ -264,6 +273,22 @@ public class QR_CodeActivity extends AppCompatActivity {
        // orderID = firestore.collection("orders").document().getId();
        // Log.d(TAG, "************************************** ORDER ID: " + orderID);
         //Toast.makeText(getApplicationContext(), "Saved the Order info" + orderID, Toast.LENGTH_LONG).show();
+
+    }
+
+    private void updateOrderID(String orderID) {
+        firestore.collection("orders").document(orderID)
+                .update("orderID",orderID).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG,"onSuccess: added orderid into firebase");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG,"onFailure: ",e);
+            }
+        });
     }
 }
 

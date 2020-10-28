@@ -4,19 +4,19 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 public class RecyclerViewRow {
     private String name;
     private String address;
     private String rating;
-    Button shopButton;
 
     public RecyclerViewRow(String name, String address, String rating) {
         this.name = name;
         this.address = address;
         this.rating = rating;
-
-
     }
+
 
     public String getName() {
         return name;
@@ -29,4 +29,6 @@ public class RecyclerViewRow {
     public String getRating() {
         return rating;
     }
+
+
 }
