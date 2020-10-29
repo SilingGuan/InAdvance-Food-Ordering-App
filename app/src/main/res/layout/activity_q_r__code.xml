@@ -61,9 +61,9 @@
             android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"/>
         <Button
-            android:id="@+id/qr_return_home"
+            android:id="@+id/qr_readOrders"
             android:layout_weight="1"
-            android:text="Home"
+            android:text="Your Orders"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/ll_order_bn"
             android:layout_width="wrap_content"

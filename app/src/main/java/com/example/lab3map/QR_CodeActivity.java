@@ -47,11 +47,10 @@ public class QR_CodeActivity extends AppCompatActivity {
     public final static int QRCodeWidth = 500;
     Bitmap bitmap;
     private TextView tv_displayOrderDetail, tv_displayOrderId;
-    private Button download, generate, return_home, share_qr;
+    private Button download, generate, readOrders, share_qr;
     private ImageView iv;
     FirebaseAuth mAuth;
     FirebaseFirestore firestore;
-    StorageReference storageReference;
     DocumentReference documentReference;
     String price, orderTime ,restaurantName, restaurantAddress, orderList, priceWithSign, userID, orderID,orderDetail;
 
@@ -68,8 +67,8 @@ public class QR_CodeActivity extends AppCompatActivity {
         download.setVisibility(View.INVISIBLE);
         generate = findViewById(R.id.generate);
         iv = findViewById(R.id.image);
-        return_home = findViewById(R.id.qr_return_home);
-        return_home.setVisibility(View.INVISIBLE);
+        readOrders = findViewById(R.id.qr_readOrders);
+        readOrders.setVisibility(View.INVISIBLE);
         share_qr = findViewById(R.id.qr_share);
         share_qr.setVisibility(View.INVISIBLE);
         tv_displayOrderDetail = findViewById(R.id.tv);
@@ -110,13 +109,13 @@ public class QR_CodeActivity extends AppCompatActivity {
                             }
                         });
 
-                        // return to home page
-                        return_home.setVisibility(View.VISIBLE);
-                        return_home.setOnClickListener(new View.OnClickListener() {
+                        // return to order detail page
+                        readOrders.setVisibility(View.VISIBLE);
+                        readOrders.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent;
-                                intent = new Intent(QR_CodeActivity.this, SecondActivity.class);
+                                intent = new Intent(QR_CodeActivity.this, OrderDetail.class);
                                 startActivity(intent);
                             }
                         });
@@ -213,7 +212,7 @@ public class QR_CodeActivity extends AppCompatActivity {
             i++;
         }
 
-        orderDetail = " Restaurant: " + restaurantName + "\n Address: " + restaurantAddress + "\n" + "\n"  + " Order Time: " + orderTime + "\n" + " Order: \n" + " " + orderList + "\n"+ " Total: $ " + price + "\n";
+        orderDetail = " Restaurant: " + restaurantName + "\n Address: " + restaurantAddress + "\n" + "\n"  + " Order Time: " + orderTime + "\n" + " Order: \n"  + orderList + "\n"+ " Total: $ " + price + "\n";
         tv_displayOrderDetail.setText(orderDetail);
 
     }

@@ -3,6 +3,7 @@ package com.example.lab3map;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -63,6 +64,7 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
     EditText type;
     String address;
     Button find;
+    Button go;
     GoogleMap google_map;
     Integer retry;
 
