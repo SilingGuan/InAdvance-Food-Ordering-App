@@ -15,13 +15,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static Object RecyclerViewClickListener;
     private List<RecyclerViewRow> recyclerViewRowList;
-//    private Fragment2 context;
     private RecyclerViewClickListener listener;
 
-//    public RecyclerViewAdapter(List<RecyclerViewRow> recyclerViewRowList, Fragment2 fragment2) {
+
     public RecyclerViewAdapter(List<RecyclerViewRow> recyclerViewRowList, RecyclerViewClickListener listener) {
         this.recyclerViewRowList = recyclerViewRowList;
-//        this.context = fragment2;
         this.listener = listener;
     }
 
@@ -54,7 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView textViewName;
         public TextView textViewAddress;
         public TextView textViewRating;
-        private RecyclerViewClickListener listener;
+       // private RecyclerViewClickListener listener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,11 +66,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             listener = new RecyclerViewAdapter.RecyclerViewClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    sharedPreferences.edit().putString("restaurantname",textViewName.getText().toString()).apply();
-                    sharedPreferences.edit().putString("restaurantaddress",textViewAddress.getText().toString()).apply();
-                    Intent intent = new Intent(view.getContext(), MenuActivity.class);
-                    view.getContext().startActivity((intent));
-                }
+                            sharedPreferences.edit().putString("restaurantname",textViewName.getText().toString()).apply();
+                            sharedPreferences.edit().putString("restaurantaddress",textViewAddress.getText().toString()).apply();
+                            Intent intent = new Intent(view.getContext(), MenuActivity.class);
+                            view.getContext().startActivity((intent));
+                        }
             };
         }
 

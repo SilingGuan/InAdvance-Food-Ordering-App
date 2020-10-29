@@ -18,7 +18,8 @@ tools:context=".SecondActivity">
         android:background="@color/colorPrimary"
         app:titleTextColor="#ffffff"
         app:popupTheme="@style/Theme.AppCompat.Light"
-        app:layout_scrollFlags="scroll|enterAlways"/>
+        />
+<!--    app:layout_scrollFlags="scroll|enterAlways"-->
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

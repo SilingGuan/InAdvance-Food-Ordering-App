@@ -1,8 +1,12 @@
 package com.example.lab3map;
 
+import com.google.firebase.Timestamp;
+
 public class Order_RecyclerViewRow {
 
-    private String orderList,orderTime, priceTotal, restaurantAddress, restaurantName,orderID;
+    private String orderList, orderTime,priceTotal, restaurantAddress, restaurantName,orderID;
+    private String name, imageUrl;
+//    Timestamp orderTime;
     public Order_RecyclerViewRow(String orderList, String orderID, String orderTime, String priceTotal, String restaurantName,String restaurantAddress){
         this.orderList = orderList;
         this.orderID = orderID;
@@ -12,10 +16,16 @@ public class Order_RecyclerViewRow {
         this.restaurantName = restaurantName;
     }
     public Order_RecyclerViewRow(){}
+    public Order_RecyclerViewRow(String name, String imageUrl){
+        this.name = name;
+        this.imageUrl = imageUrl;
+    }
+
 
     public void setOrderList(String orderList) {
         this.orderList = orderList;
     }
+//    public void setOrderTime(Timestamp orderTime){this.orderTime = orderTime;}
     public void setOrderTime(String orderTime) {
         this.orderTime = orderTime;
     }
@@ -30,6 +40,12 @@ public class Order_RecyclerViewRow {
     }
     public void setOrderID(String orderID) {
             this.orderID = orderID;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 
@@ -53,5 +69,12 @@ public class Order_RecyclerViewRow {
     }
     public String getOrderID() {
         return orderID;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

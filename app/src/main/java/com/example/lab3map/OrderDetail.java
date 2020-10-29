@@ -69,10 +69,12 @@ public class OrderDetail extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(@NonNull OrdersViewHolder holder, int position, @NonNull Order_RecyclerViewRow model) {
+
                   holder.display_order_list.setText(model.getOrderList());
                   holder.display_resName.setText(model.getRestaurantName());
                   holder.display_resAddress.setText(model.getRestaurantAddress());
                   holder.display_price.setText(model.getPriceTotal());
+//                  holder.display_order_time.setText((CharSequence) model.getOrderTime().toDate());
                   holder.display_order_time.setText(model.getOrderTime());
                 try {
                     bitmap = textToImageEncode(model.getOrderID());

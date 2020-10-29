@@ -11,6 +11,11 @@
        android:icon="@drawable/ic_map"
        android:title="Map"
        />
+    <item
+        android:id="@+id/recommend"
+        android:icon="@drawable/ic_share"
+        android:title="Recommend"
+        />
 
     <item
         android:id="@+id/orderDetail"
@@ -23,11 +28,7 @@
     android:checked="true"
     android:title="More">
     <menu>
-<!--   <item-->
-<!--       android:id="@+id/share"-->
-<!--       android:icon="@drawable/ic_share"-->
-<!--       android:title="Share"-->
-<!--       />-->
+
         <item
             android:id="@+id/aboutMe"
             android:icon="@drawable/ic_user_icon"

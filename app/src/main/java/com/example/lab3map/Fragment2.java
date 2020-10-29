@@ -29,7 +29,8 @@ import static android.content.ContentValues.TAG;
  * create an instance of this fragment.
  */
 public class Fragment2 extends Fragment implements RecyclerViewAdapter.RecyclerViewClickListener{
-    private List<RecyclerViewRow> recyclerViewRowList;
+    //List<RecyclerViewRow> recyclerViewRowList ;
+    List<RecyclerViewRow> recyclerViewRowList;
     SharedPreferences sharedPreferences;
     private Fragment2Listener listener;
     private RecyclerView recyclerView;
@@ -86,7 +87,7 @@ public class Fragment2 extends Fragment implements RecyclerViewAdapter.RecyclerV
    }
 
     public void updateRank(List<HashMap<String, String>> hashMaps){
-        ArrayList<RecyclerViewRow> recyclerViewRowList = new ArrayList<>();
+        List<RecyclerViewRow> recyclerViewRowList = new ArrayList<>();
 
         sharedPreferences = getActivity().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
 
@@ -115,30 +116,20 @@ public class Fragment2 extends Fragment implements RecyclerViewAdapter.RecyclerV
             String rating = "Rating: "+hashMapList.get("rating")+"/5";
             recyclerViewRowList.add(new RecyclerViewRow(name,address,rating));
         }
-//        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList,Fragment2.this);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList, (RecyclerViewAdapter.RecyclerViewClickListener) RecyclerViewAdapter.RecyclerViewClickListener);
-        recyclerView.setAdapter(recyclerViewAdapter);
-//        setOnClickListener();
 
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(recyclerViewRowList,
+                (RecyclerViewAdapter.RecyclerViewClickListener) RecyclerViewAdapter.RecyclerViewClickListener);
+        recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
-
-//    private void setOnClickListener() {
-//        listener1 = new RecyclerViewAdapter.RecyclerViewClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-//                Intent intent = new Intent(getActivity(), MenuActivity.class);
-//                startActivity(intent);
-//            }
-//        };
-//    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_2, container, false);
+        View view = inflater.inflate(R.layout.fragment_2, container, false);
+        return view;
     }
 
     @Override

@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,13 +39,13 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 public class SecondActivity extends AppCompatActivity implements GmapFragment.Fragment1Listener, Fragment2.Fragment2Listener{
-    private static String TAG = "ABC";
+    private static String TAG = "Second Activity";
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private GmapFragment fragment1;
     private Fragment2 fragment2;
-    private MeFragment fragment3;
+    private RecommendFragment fragment3;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
@@ -84,12 +83,12 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
         viewPager =  findViewById(R.id.viewPager);
 
         fragment1 = new GmapFragment();
+        fragment2 = Fragment2.newInstance();
+        // setup here for switch the drawer, so cannot use fragment3 in setViewPager()
+        fragment3 = new RecommendFragment();
 
         setViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
-
-        fragment2 = Fragment2.newInstance();
-        fragment3 = MeFragment.newInstance();
     }
 
 
@@ -97,8 +96,8 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     private void setViewPager(ViewPager viewPager) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(fragment1, "Search");
-        viewPagerAdapter.addFragment(Fragment2.newInstance(), "List");
-        viewPagerAdapter.addFragment(MeFragment.newInstance(), "Me");
+        viewPagerAdapter.addFragment(fragment2, "List");
+        viewPagerAdapter.addFragment(new RecommendFragment(), "Recommend");
         viewPager.setAdapter(viewPagerAdapter);
 
     }
@@ -106,6 +105,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     @Override
     public void onInputFragment1Sent(List<HashMap<String, String>> hashMaps) {
+       // Fragment2 fragment20 = Fragment2.newInstance();
         fragment2.updateRank(hashMaps);
     }
 
@@ -157,18 +157,22 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
                    case R.id.aboutMe:
                        intent = new Intent(SecondActivity.this,AboutMe.class);
                        startActivity(intent);
-
                        break;
+
                     case R.id.settings:
                           intent = new Intent(SecondActivity.this, SettingsActivity.class);
                           startActivity(intent);
                           break;
-
                     case R.id.home:
                     case R.id.map:
                           THE_POSITION = 0;
                           viewPager.setCurrentItem(THE_POSITION);
                           showMapFragment();
+                          break;
+                    case R.id.recommend:
+                          THE_POSITION = 2;
+                          viewPager.setCurrentItem(THE_POSITION);
+                          showRecommendFragment();
                           break;
 
                     case R.id.orderDetail:
@@ -214,7 +218,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     }
 
     // switch - helper
-    private void showMeFragment() {
+    private void showRecommendFragment() {
         if (this.fragment3 == null) {
             this.addFragmentToStack(this.fragment3);
         }
