@@ -18,10 +18,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".BusinessAboutMe"
+            android:label="InAdvance"
+            android:parentActivityName=".BusinessOwner"></activity>
+        <activity
+            android:name=".BuinessSettingsActivity"
+            android:label="InAdvance"
+            android:parentActivityName=".BusinessOwner" />
         <activity
             android:name=".SettingsActivity"
             android:label="InAdvance"
-            android:parentActivityName=".SecondActivity"></activity>
+            android:parentActivityName=".SecondActivity" />
         <activity
             android:name=".AboutMe"
             android:label="InAdvance"

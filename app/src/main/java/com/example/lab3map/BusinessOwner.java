@@ -82,7 +82,7 @@ public class BusinessOwner extends AppCompatActivity {
         iv_me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(BusinessOwner.this,AboutMe.class);
+                Intent i = new Intent(BusinessOwner.this,BusinessAboutMe.class);
                 startActivity(i);
             }
         });
@@ -90,7 +90,7 @@ public class BusinessOwner extends AppCompatActivity {
         iv_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(BusinessOwner.this,SettingsActivity.class);
+                Intent i = new Intent(BusinessOwner.this,BuinessSettingsActivity.class);
                 startActivity(i);
             }
         });
