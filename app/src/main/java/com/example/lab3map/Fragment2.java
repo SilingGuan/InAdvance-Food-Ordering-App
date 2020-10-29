@@ -29,7 +29,8 @@ import static android.content.ContentValues.TAG;
  * create an instance of this fragment.
  */
 public class Fragment2 extends Fragment implements RecyclerViewAdapter.RecyclerViewClickListener{
-    private List<RecyclerViewRow> recyclerViewRowList;
+    ArrayList<RecyclerViewRow> recyclerViewRowList ;
+  //  private List<RecyclerViewRow> recyclerViewRowList;
     SharedPreferences sharedPreferences;
     private Fragment2Listener listener;
     private RecyclerView recyclerView;
@@ -131,6 +132,7 @@ public class Fragment2 extends Fragment implements RecyclerViewAdapter.RecyclerV
 
     @Override
     public void onClick(View view, int position) {
+
         recyclerViewRowList.get(position);
         Intent intent = new Intent(getActivity(), MenuActivity.class);
         startActivity(intent);

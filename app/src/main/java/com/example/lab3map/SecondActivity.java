@@ -89,9 +89,6 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
         setViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
-
-
-
     }
 
 
@@ -99,7 +96,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
     private void setViewPager(ViewPager viewPager) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(fragment1, "Search");
-        viewPagerAdapter.addFragment(Fragment2.newInstance(), "List");
+        viewPagerAdapter.addFragment(fragment2, "List");
         viewPagerAdapter.addFragment(new RecommendFragment(), "Recommend");
         viewPager.setAdapter(viewPagerAdapter);
 
@@ -108,6 +105,7 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
 
     @Override
     public void onInputFragment1Sent(List<HashMap<String, String>> hashMaps) {
+       // Fragment2 fragment20 = Fragment2.newInstance();
         fragment2.updateRank(hashMaps);
     }
 
@@ -159,13 +157,12 @@ public class SecondActivity extends AppCompatActivity implements GmapFragment.Fr
                    case R.id.aboutMe:
                        intent = new Intent(SecondActivity.this,AboutMe.class);
                        startActivity(intent);
-
                        break;
+
                     case R.id.settings:
                           intent = new Intent(SecondActivity.this, SettingsActivity.class);
                           startActivity(intent);
                           break;
-
                     case R.id.home:
                     case R.id.map:
                           THE_POSITION = 0;
