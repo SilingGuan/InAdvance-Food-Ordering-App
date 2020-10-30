@@ -171,7 +171,7 @@ public class QR_CodeActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
         BitmapDrawable drawable = (BitmapDrawable) iv.getDrawable();
         bitmap = drawable.getBitmap();
-        File file = new File(getExternalCacheDir() + "/" + getResources().getString(R.string.app_name) + ".png");
+        File file = new File(getExternalCacheDir() + "/" + getResources().getString(R.string.app_name) + (orderID)+ ".png");
         Intent shareInt;
 
         try {
