@@ -82,8 +82,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     total+=num1*price;
                     oldnum=num1;
                     TextView price_total = (TextView) itemView.getRootView().findViewById(R.id.price_total);
+
                     price_total.setText(String.valueOf(total));
-                    HashMap.put(myText1.getText().toString(),num);
+                    if(num1==0){
+                        HashMap.remove(myText1.getText().toString());
+                    }else{
+                        HashMap.put(myText1.getText().toString(),num);
+                    }
+
                     Gson gson = new Gson();
                     String hashMapString = gson.toJson(HashMap);
 //                    sharedPreferences = itemView.getContext().getSharedPreferences("com.example.lab3map", Context.MODE_PRIVATE);
