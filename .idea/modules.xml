@@ -3,17 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="lab3map/app" />
-<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/lab3map.iml" filepath="$PROJECT_DIR$/.idea/modules/lab3map.iml" group="lab3map" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/lab3map-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/lab3map-app.iml" group="lab3map/app" />
-<<<<<<< Updated upstream
-=======
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/lab3map.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/lab3map.app.iml" />
->>>>>>> Stashed changes
-=======
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lab3map.iml" filepath="$PROJECT_DIR$/.idea/modules/lab3map.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/lab3map.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/lab3map.app.iml" />
->>>>>>> main
     </modules>
   </component>
 </project>
