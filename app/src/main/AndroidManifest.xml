@@ -86,10 +86,10 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAlS4OUGpiDtl5ziIqCSkb3EcPb58Z3JZw" />
+            android:value="AIzaSyAs4W0c1-iHZfRKN-bULfm0c0II-tosbGE" />
         <meta-data
             android:name="com.google.android.API_KEY"
-            android:value="AIzaSyAlS4OUGpiDtl5ziIqCSkb3EcPb58Z3JZw" />
+            android:value="AIzaSyAs4W0c1-iHZfRKN-bULfm0c0II-tosbGE" />
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />

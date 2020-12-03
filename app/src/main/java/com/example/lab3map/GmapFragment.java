@@ -119,7 +119,7 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
                     googlePlacesUrl.append("&radius=").append(1000);
                     googlePlacesUrl.append("&keyword=").append(address);
                     googlePlacesUrl.append("&sensor=true");
-                    googlePlacesUrl.append("&key=AIzaSyAlS4OUGpiDtl5ziIqCSkb3EcPb58Z3JZw");
+                    googlePlacesUrl.append("&key=AIzaSyAs4W0c1-iHZfRKN-bULfm0c0II-tosbGE");
 
                     google_map.clear(); //clear the last address markers including the current location
                     getCurrentLocation();
